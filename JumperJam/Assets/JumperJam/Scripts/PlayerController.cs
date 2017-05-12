@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : SingletonMonoBehaviour<PlayerController>
 {
@@ -40,6 +41,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     private PlayerState _playerState;
 
+	//player can move horizontal or not
+	public bool canMoveNow;
+
     public PlayerState playerState
     {
         get { return _playerState; }
@@ -53,7 +57,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void OnEnable()
     {
+		DOTween.Init();
         playerState = PlayerState.Idle;
+		canMoveNow = false;
     }
 
     /// <summary>
@@ -66,12 +72,26 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
     }
 
+	void Update ()
+	{
+		//move player with phone accelerater
+		if (canMoveNow == true ) {
+			transform.Translate (Input.acceleration.x * 0.5f, 0, 0);
+		}
+	}
 
     public void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("Platform"))
         {
-            Jump();
+			Jump ();
+			//make platform bounce
+			if (transform.position.y > col.transform.position.y + 0.2f) 
+			{
+				col.transform.DOLocalMoveY (col.transform.position.y - 0.3f, 0.1f).OnComplete (() => {
+					col.transform.DOLocalMoveY (col.transform.position.y + 0.3f, 0.1f);
+				});
+			}
         }
         if (col.CompareTag("Enemy"))
         {
@@ -111,6 +131,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         {
             playerState = PlayerState.Idle;
         }
+
     }
 
 }
