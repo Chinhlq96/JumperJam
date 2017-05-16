@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EventManager;
+using DG.Tweening;
+
 public class PlayerController : SingletonMonoBehaviour<PlayerController>
 {
 
@@ -39,7 +41,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     Sprite[] aniSprites;
 
 	public Transform pos;
+	//for testing on editor
+	public float moveSpeed;
+	private float moveX;
+	private bool notTouchOne;
+	//
+
     private PlayerState _playerState;
+
+	//player can move horizontal or not
+	public bool canMoveNow;
 
     public PlayerState playerState
     {
@@ -52,9 +63,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     }
 
 
+
     void OnEnable()
     {
+		DOTween.Init();
         playerState = PlayerState.Idle;
+		canMoveNow = false;
+		notTouchOne = true;
     }
 
     /// <summary>
@@ -67,6 +82,29 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
     }
 
+	void Update ()
+	{
+		//move player with phone accelerater
+		if (canMoveNow == true ) {
+			Vector2 pos = transform.position;
+			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
+			transform.position = pos;
+
+			///
+
+			moveX = Input.GetAxisRaw ("Horizontal");
+			Vector2 directionX = new Vector2 (moveX, 0);
+			MoveX (directionX);
+		}
+
+	}
+
+	void MoveX (Vector2 directionX)
+	{
+		Vector2 pos = transform.position;
+		pos += directionX * moveSpeed ;
+		transform.position = pos;
+	}
 
     public void OnTriggerEnter2D(Collider2D col)
     {
@@ -74,7 +112,23 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
         if (col.CompareTag("Platform"))
         {
-            Jump();
+			Jump ();
+			//make platform bounce
+			if (transform.position.y > col.transform.position.y + 0.2f) 
+			{
+				col.transform.DOLocalMoveY (col.transform.position.y - 0.3f, 0.1f).OnComplete (() => {
+					col.transform.DOLocalMoveY (col.transform.position.y + 0.3f, 0.1f);
+				});
+			}
+			if (notTouchOne == true) 
+			{
+				if (moveX > 0 || Input.acceleration.x > 0) {
+					transform.DORotate (new Vector3 (0, 0, -360), 0.65f, RotateMode.FastBeyond360);
+				} else if (moveX < 0 || Input.acceleration.x < 0){
+					transform.DORotate (new Vector3 (0, 0, +360), 0.65f, RotateMode.FastBeyond360);
+				}
+				notTouchOne = false;
+			}
         }
         if (col.CompareTag("Enemy"))
         {
@@ -118,6 +172,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     {
         if (RG.velocity.y <= 0)
         {
+			notTouchOne = true;
             if (playerState == PlayerState.Die) return;
             RG.velocity = new Vector2(0, 0);
             RG.AddForce(force, ForceMode2D.Impulse);
@@ -140,6 +195,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         {
             playerState = PlayerState.Idle;
         }
+
     }
 
 }
