@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EventManager;
 using DG.Tweening;
 
 public class PlayerController : SingletonMonoBehaviour<PlayerController>
@@ -39,6 +40,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     [SerializeField]
     Sprite[] aniSprites;
 
+	public Transform pos;
 	//for testing on editor
 	public float moveSpeed;
 	private float moveX;
@@ -106,6 +108,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     public void OnTriggerEnter2D(Collider2D col)
     {
+		
+
         if (col.CompareTag("Platform"))
         {
 			Jump ();
@@ -131,6 +135,28 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
             playerState = PlayerState.Die;
             Die();
         }
+		//PlatformG => Platform generator
+		if(col.CompareTag("PlatformG"))
+		{
+			
+			if (RG.velocity.y <= 0 && (!col.gameObject.GetComponent<Check> ().getStepped ())) 
+			{	
+				
+				this.PostEvent (EventID.GenMap, this);
+				Jump ();
+				col.gameObject.GetComponent<Check> ().setStepped (true);
+
+			} else
+				Jump ();
+
+
+
+		}
+		if (col.CompareTag ("DeathArea")) 
+		{
+			playerState = PlayerState.Die;
+			Die();
+		}
        
     }
 
@@ -161,6 +187,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void FixedUpdate()
     {
+		float moveHorizontal = Input.GetAxis ("Horizontal");
+		Vector3 movement = new Vector3 (moveHorizontal,0,0);
+		transform.position += movement * 20f * Time.deltaTime;
+
         if (RG.velocity.y < 0 && playerState != PlayerState.Die)
         {
             playerState = PlayerState.Idle;

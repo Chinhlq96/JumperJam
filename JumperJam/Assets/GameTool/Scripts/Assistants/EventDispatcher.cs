@@ -192,6 +192,7 @@ namespace EventManager
 
 public enum EventID
 {
+	GenMap,
     TapToScreen,
     PostScore,
     GetHighScore,
