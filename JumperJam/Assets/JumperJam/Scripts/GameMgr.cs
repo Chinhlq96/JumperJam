@@ -58,6 +58,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
             gameState = GameState.Playing;
             ShowTapUI();
             PlayerController.Instance.Jump();
+			PlayerController.Instance.canMoveNow = true;
         }
     }
 

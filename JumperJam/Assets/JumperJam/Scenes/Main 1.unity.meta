@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:JumperJam/Assets/Plugins/iOS/GoogleMobileAds.framework/Headers/GADAdNetworkExtras.h.meta
+guid: bb196a6db2b6b9e49a169becc554b79e
+timeCreated: 1460095329
+=======
 guid: 91b2abbd0c6a3e54fa173d936b893145
 timeCreated: 1494068476
+>>>>>>> origin/develop:JumperJam/Assets/JumperJam/Scenes/Main 1.unity.meta
 licenseType: Pro
 DefaultImporter:
   userData: 
