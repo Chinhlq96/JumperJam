@@ -5,6 +5,11 @@ using UnityEngine;
 public class Check : MonoBehaviour {
 
 	public bool stepped;
+	void OnEnable()
+	{
+		stepped = false;
+
+	}
 	public bool getStepped()
 	{
 		return stepped;

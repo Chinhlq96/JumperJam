@@ -24,11 +24,9 @@ public class MapMgr : MonoBehaviour {
 
 	void GenMap()
 	{	int randomValue = 0;
+		randomValue = Random.Range (2,3);
 		GameObject obj;
-		randomValue = Random.Range (1,3);
-
 		obj = ContentMgr.Instance.GetItem ("Easy" + randomValue, pos.gameObject.transform.position);
-	
 
 	}
 }

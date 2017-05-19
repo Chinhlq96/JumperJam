@@ -83,18 +83,22 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     }
 
 	void Update ()
-	{
+	{   Debug.Log (playerState);
 		//move player with phone accelerater
-		if (canMoveNow == true ) {
-			Vector2 pos = transform.position;
-			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
-			transform.position = pos;
+		if (canMoveNow == true) 
+		{
+			if (playerState != PlayerState.Die) {
+				Vector2 pos = transform.position;
+				pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
+				transform.position = pos;
 
-			///
+				///
 
-			moveX = Input.GetAxisRaw ("Horizontal");
-			Vector2 directionX = new Vector2 (moveX, 0);
-			MoveX (directionX);
+				moveX = Input.GetAxisRaw ("Horizontal");
+				Vector2 directionX = new Vector2 (moveX, 0);
+				MoveX (directionX);
+		
+			} 
 		}
 
 	}
@@ -116,8 +120,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			//make platform bounce
 			if (transform.position.y > col.transform.position.y + 0.2f) 
 			{
-				col.transform.DOLocalMoveY (col.transform.position.y - 0.3f, 0.1f).OnComplete (() => {
-					col.transform.DOLocalMoveY (col.transform.position.y + 0.3f, 0.1f);
+				col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
+					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
 				});
 			}
 			if (notTouchOne == true) 
@@ -135,23 +139,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
             playerState = PlayerState.Die;
             Die();
         }
-		//PlatformG => Platform generator
-		if(col.CompareTag("PlatformG"))
-		{
-			
-			if (RG.velocity.y <= 0 && (!col.gameObject.GetComponent<Check> ().getStepped ())) 
-			{	
-				
-				this.PostEvent (EventID.GenMap, this);
-				Jump ();
-				col.gameObject.GetComponent<Check> ().setStepped (true);
 
-			} else
-				Jump ();
-
-
-
-		}
 		if (col.CompareTag ("DeathArea")) 
 		{
 			playerState = PlayerState.Die;
@@ -187,9 +175,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void FixedUpdate()
     {
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		Vector3 movement = new Vector3 (moveHorizontal,0,0);
-		transform.position += movement * 20f * Time.deltaTime;
 
         if (RG.velocity.y < 0 && playerState != PlayerState.Die)
         {
