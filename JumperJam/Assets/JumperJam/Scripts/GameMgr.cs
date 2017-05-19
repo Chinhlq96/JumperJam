@@ -6,12 +6,13 @@ using EventManager;
 public class GameMgr : SingletonMonoBehaviour<GameMgr>
 {
     private GameState _gameState;
+	public static int totalPoint;
 
     [SerializeField]
     GameObject[] tapObjects;
 
     public GameState gameState
-    {
+    {	
         get { return _gameState; }
         set { _gameState = value; }
     }
@@ -19,6 +20,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     void OnEnable()
     {
         gameState = GameState.Start;
+		totalPoint = 0;
         InputMgr.TapToScreen += TapToScreen;
     }
 
@@ -61,6 +63,16 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 			PlayerController.Instance.canMoveNow = true;
         }
     }
+
+	public void AddPoint (int Point)
+	{
+		totalPoint += Point;
+	}
+
+	public int ShowTotalPoint()
+	{
+		return totalPoint;
+	}
 
 }
 

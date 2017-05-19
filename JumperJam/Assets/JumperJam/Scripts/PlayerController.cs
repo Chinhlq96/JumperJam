@@ -117,19 +117,25 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (notTouchOne == true) 
 			{
 				//Jump ();
-
-				if (moveX >= 0 || Input.acceleration.x > 0) {
-					transform.DORotate (new Vector3 (0, 0, -360), 0.3f, RotateMode.FastBeyond360);
-				} else if (moveX < 0 || Input.acceleration.x < 0){
-					transform.DORotate (new Vector3 (0, 0, +360), 0.3f, RotateMode.FastBeyond360);
+				transform.eulerAngles = new Vector3 (0,0,0);
+				if (moveX > 0 || Input.acceleration.x > 0) {
+					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
+				} else if (moveX <= 0 || Input.acceleration.x < 0){
+					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
 				}
 				notTouchOne = false;
 			}
         }
         if (col.CompareTag("Enemy"))
         {
-            playerState = PlayerState.Die;
-            Die();
+			if (transform.position.y > col.transform.position.y + 1.5f) {
+				RG.velocity = new Vector2(0, 0);
+				RG.AddForce(force * 0.7f, ForceMode2D.Impulse);
+				col.gameObject.SetActive (false);
+			} else {
+				playerState = PlayerState.Die;
+				Die ();
+			}
         }
 		//PlatformG => Platform generator
 		if(col.CompareTag("PlatformG"))
