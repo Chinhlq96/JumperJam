@@ -86,9 +86,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	{
 		//move player with phone accelerater
 		if (canMoveNow == true ) {
-			Vector2 pos = transform.position;
+			/*Vector2 pos = transform.position;
 			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
-			transform.position = pos;
+			transform.position = pos;*/
 
 			///
 
@@ -97,35 +97,31 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			MoveX (directionX);
 		}
 
+
 	}
 
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
-		pos += directionX * moveSpeed ;
+		pos += directionX * moveSpeed * 0.1f ;
 		transform.position = pos;
 	}
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-		
-
         if (col.CompareTag("Platform"))
         {
 			Jump ();
+
 			//make platform bounce
-			if (transform.position.y > col.transform.position.y + 0.2f) 
-			{
-				col.transform.DOLocalMoveY (col.transform.position.y - 0.3f, 0.1f).OnComplete (() => {
-					col.transform.DOLocalMoveY (col.transform.position.y + 0.3f, 0.1f);
-				});
-			}
 			if (notTouchOne == true) 
 			{
-				if (moveX > 0 || Input.acceleration.x > 0) {
-					transform.DORotate (new Vector3 (0, 0, -360), 0.65f, RotateMode.FastBeyond360);
+				//Jump ();
+
+				if (moveX >= 0 || Input.acceleration.x > 0) {
+					transform.DORotate (new Vector3 (0, 0, -360), 0.3f, RotateMode.FastBeyond360);
 				} else if (moveX < 0 || Input.acceleration.x < 0){
-					transform.DORotate (new Vector3 (0, 0, +360), 0.65f, RotateMode.FastBeyond360);
+					transform.DORotate (new Vector3 (0, 0, +360), 0.3f, RotateMode.FastBeyond360);
 				}
 				notTouchOne = false;
 			}
@@ -172,12 +168,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     {
         if (RG.velocity.y <= 0)
         {
-			notTouchOne = true;
+
             if (playerState == PlayerState.Die) return;
             RG.velocity = new Vector2(0, 0);
             RG.AddForce(force, ForceMode2D.Impulse);
             playerState = PlayerState.Jump;
         }
+		notTouchOne = true;
     }
 
     void Die()
@@ -187,9 +184,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void FixedUpdate()
     {
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		Vector3 movement = new Vector3 (moveHorizontal,0,0);
-		transform.position += movement * 20f * Time.deltaTime;
+//		float moveHorizontal = Input.GetAxis ("Horizontal");
+//		Vector3 movement = new Vector3 (moveHorizontal,0,0);
+//		transform.position += movement * 20f * Time.deltaTime;
 
         if (RG.velocity.y < 0 && playerState != PlayerState.Die)
         {
