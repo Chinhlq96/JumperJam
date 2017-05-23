@@ -82,14 +82,14 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
     }
 
-	void Update ()
-	{   Debug.Log (playerState);
+	void Update () {
+//	   Debug.Log (playerState);
 		//move player with phone accelerater
 
 		if (canMoveNow == true ) {
-			/*Vector2 pos = transform.position;
+			Vector2 pos = transform.position;
 			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
-			transform.position = pos;*/
+			transform.position = pos;
 
 
 				///
@@ -98,7 +98,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				Vector2 directionX = new Vector2 (moveX, 0);
 				MoveX (directionX);
 		
-			} 
+
 		}
 
 
@@ -184,7 +184,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         RG.velocity = new Vector2(0, -5);
     }
 
-    void FixedUpdate()
+void FixedUpdate()
     {
 
 //		float moveHorizontal = Input.GetAxis ("Horizontal");
