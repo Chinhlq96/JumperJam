@@ -9,6 +9,9 @@ using EventManager;
 	GameObject spawnPoint;
 
 	[SerializeField]
+	GameObject spawnStartPoint;
+
+	[SerializeField]
 	GameObject despawnHold;
 
 	private int difficultCount = 0;
@@ -50,6 +53,12 @@ using EventManager;
 		}
 	}
 
+	public void GenStart()
+	{
+		int randomValue = 0;
+		randomValue = Random.Range (1, 2);
+		ContentMgr.Instance.GetItem ("Start" + randomValue, spawnStartPoint.gameObject.transform.position);
+	}
 
 
 
