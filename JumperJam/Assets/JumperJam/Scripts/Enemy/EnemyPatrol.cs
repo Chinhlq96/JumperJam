@@ -12,7 +12,7 @@ public class EnemyPatrol : MonoBehaviour
 	private float moveSpeed;
 	[SerializeField]
 	private bool canFire;
-
+	[SerializeField]
 	private float shootSpeed;
 	private float shootDelayCounter;
 	[SerializeField]
@@ -20,11 +20,13 @@ public class EnemyPatrol : MonoBehaviour
 	private Transform target;
 	private float speed;
 	private int targetSelect = 1;
+	[SerializeField]
+	private bool isFlower;
+	[SerializeField]
+	private float height;
 	//private Rigidbody2D enemyRg;
 	void Start () 
 	{
-		shootSpeed = 15f;
-		delayShoot = 1f;
 		shootDelayCounter = delayShoot;
 		speed = moveSpeed;
 		if (path.Length != 0)
@@ -60,7 +62,7 @@ public class EnemyPatrol : MonoBehaviour
 				shootDelayCounter -= Time.deltaTime;
 				if (shootDelayCounter <= 0) 
 				{
-					StartCoroutine ("Fire");
+					Fire();
 					shootDelayCounter = delayShoot;
 				}
 			}
@@ -82,16 +84,25 @@ public class EnemyPatrol : MonoBehaviour
 		speed = moveSpeed;
 	}
 
-	IEnumerator Fire()
+	void Fire()
 	{
 		if (firePos != null) 
 		{
-			var fireball = ContentMgr.Instance.GetItem<FireballController> ("EnemySnowball", firePos.position);
+			string typeBall;
+			if (isFlower)
+				typeBall = "EnemyFireball";
+			else
+				typeBall = "EnemySnowball";
+			var fireball = ContentMgr.Instance.GetItem<FireballController> (typeBall, firePos.position);
+			if (!isFlower)
+				fireball.Shoot (-shootSpeed * transform.localScale.x);
+			else {
+				fireball.GetComponent<Rigidbody2D> ().gravityScale = 2f;
+				fireball.Shoot (-shootSpeed * transform.localScale.x, height);
+				shootSpeed = -shootSpeed;
+			}
+	
 
-			fireball.Shoot (-shootSpeed * transform.localScale.x);
-			yield return new WaitForSeconds (1f);
-			if (fireball != null)
-				fireball.Destroy ();
 		}
 	}
 }

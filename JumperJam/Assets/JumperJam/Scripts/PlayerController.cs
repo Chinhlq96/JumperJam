@@ -75,7 +75,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     /// <summary>
     /// Update state while change state
     /// </summary>
-    void UpdateState()
+    public void UpdateState()
     {
         int index = (int)playerState;
         playerSR.sprite = aniSprites[index];

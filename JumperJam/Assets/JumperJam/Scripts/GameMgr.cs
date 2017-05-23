@@ -36,13 +36,17 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     /// </summary>
     public void NewGame()
     {
+		PlayerController.Instance.playerState = PlayerState.Jump;
+		PlayerController.Instance.UpdateState ();
         gameState = GameState.Wait;
         ShowTapUI();
+		UIManager.Instance.ShowPage("GamePage");
     }
 
     public void GameOver()
     {
-        Debug.Log("gameover");
+        //Debug.Log("gameover");
+		UIManager.Instance.ShowPage("GameOverPage");
     }
 
     void ShowTapUI()
