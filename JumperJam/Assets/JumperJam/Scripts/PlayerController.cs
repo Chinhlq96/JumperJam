@@ -75,7 +75,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     /// <summary>
     /// Update state while change state
     /// </summary>
-    void UpdateState()
+    public void UpdateState()
     {
         int index = (int)playerState;
         playerSR.sprite = aniSprites[index];
@@ -88,7 +88,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 		if (canMoveNow == true ) {
 			Vector2 pos = transform.position;
-			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
+			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.5f;
 			transform.position = pos;
 
 
@@ -182,6 +182,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     void Die()
     {
         RG.velocity = new Vector2(0, -5);
+		canMoveNow = false;
     }
 
 void FixedUpdate()
