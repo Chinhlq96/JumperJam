@@ -88,7 +88,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 		if (canMoveNow == true ) {
 			Vector2 pos = transform.position;
-			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
+			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.5f;
 			transform.position = pos;
 
 
@@ -119,14 +119,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 			//make platform bounce
 
-			if (transform.position.y > col.transform.position.y + 0.2f) 
-			{
-				col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
-					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
-				});
-			}
 
-			if (notTouchOne == true) 
+			/*if (notTouchOne == true) 
 			{
 				//Jump ();
 				transform.eulerAngles = new Vector3 (0,0,0);
@@ -136,7 +130,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
 				}
 				notTouchOne = false;
-			}
+			}*/
         }
         if (col.CompareTag("Enemy"))
         {
@@ -182,6 +176,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     void Die()
     {
         RG.velocity = new Vector2(0, -5);
+		canMoveNow = false;
     }
 
 void FixedUpdate()
