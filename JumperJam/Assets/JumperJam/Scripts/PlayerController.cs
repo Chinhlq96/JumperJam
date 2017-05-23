@@ -82,19 +82,23 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
     }
 
-	void Update ()
-	{
+	void Update () {
+//	   Debug.Log (playerState);
 		//move player with phone accelerater
+
 		if (canMoveNow == true ) {
-			/*Vector2 pos = transform.position;
+			Vector2 pos = transform.position;
 			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.1f;
-			transform.position = pos;*/
+			transform.position = pos;
 
-			///
 
-			moveX = Input.GetAxisRaw ("Horizontal");
-			Vector2 directionX = new Vector2 (moveX, 0);
-			MoveX (directionX);
+				///
+
+				moveX = Input.GetAxisRaw ("Horizontal");
+				Vector2 directionX = new Vector2 (moveX, 0);
+				MoveX (directionX);
+		
+
 		}
 
 
@@ -114,6 +118,14 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			Jump ();
 
 			//make platform bounce
+
+			if (transform.position.y > col.transform.position.y + 0.2f) 
+			{
+				col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
+					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
+				});
+			}
+
 			if (notTouchOne == true) 
 			{
 				//Jump ();
@@ -137,23 +149,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				Die ();
 			}
         }
-		//PlatformG => Platform generator
-		if(col.CompareTag("PlatformG"))
-		{
-			
-			if (RG.velocity.y <= 0 && (!col.gameObject.GetComponent<Check> ().getStepped ())) 
-			{	
-				
-				this.PostEvent (EventID.GenMap, this);
-				Jump ();
-				col.gameObject.GetComponent<Check> ().setStepped (true);
 
-			} else
-				Jump ();
-
-
-
-		}
 		if (col.CompareTag ("DeathArea")) 
 		{
 			playerState = PlayerState.Die;
@@ -188,11 +184,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         RG.velocity = new Vector2(0, -5);
     }
 
-    void FixedUpdate()
+void FixedUpdate()
     {
+
 //		float moveHorizontal = Input.GetAxis ("Horizontal");
 //		Vector3 movement = new Vector3 (moveHorizontal,0,0);
 //		transform.position += movement * 20f * Time.deltaTime;
+
 
         if (RG.velocity.y < 0 && playerState != PlayerState.Die)
         {

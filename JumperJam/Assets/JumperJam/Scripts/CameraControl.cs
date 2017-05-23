@@ -7,50 +7,53 @@ public class CameraControl : MonoBehaviour
 	[SerializeField]
 	GameObject player;
 
+	//Thoi gian camera follow khi chet
+	public float followTime = 0.3f;
+
+	//khoang cach giua vi tri cua camera va player
+	private float distanceFromPlayer;
+
+	//Check xem da follow chua
 	bool followed;
+	//Check xem da lay distance chua
+	bool checkedDistant;
+
 	void Update()
 	{
+
+		//Camera khong follow khi Player idle ( roi xuong nhung ko chet )
 		if ( player.transform.position.y>0)
 		{
 			if (player.transform.position.y > transform.position.y) 
 			{
 				this.transform.position = new Vector3 (0, player.transform.position.y, -100);
 			}
-	
-	 	}
-
-		if (PlayerController.Instance.playerState == 0 && !followed) 
-		{
-			
-			float time = 0;
-			float followTime = 3f;
-			if(time < followTime && !followed)
-			{
-				time += Time.deltaTime;
-				this.transform.position = new Vector3 (0, player.transform.position.y, -100);
-				//if(time >= 3f)
-					//followed = true;
-			}
-			//StartCoroutine ("deathCam");
-			followed = true;
 
 		}
+
+		//Camera follow khi player chet
+		if (PlayerController.Instance.playerState == 0 &&!followed ) 
+		{
+			//Lay khoang cach giua player va camera
+			if (!checkedDistant) 
+			{
+				distanceFromPlayer = transform.position.y - player.transform.position.y;
+			}
+			checkedDistant = true;
+
+			//Follow player trong thoi gian followTime
+			StartCoroutine ("deathCam");
+
+		}
+
 	}
+
 
 	IEnumerator deathCam()
 	{
-		Debug.Log ("ayy");
-		float time = 0;
-		float followTime = 5f;
-		while (time < followTime) 
-		{
-			Debug.Log ("ayy");
-			time += Time.deltaTime;
-			this.transform.position = new Vector3 (0, player.transform.position.y, -100);
-
-		}
-		yield return null;
+		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y - distanceFromPlayer, transform.position.z);
+		yield return new WaitForSeconds(followTime);
+		followed = true;
 	}
-
 
 }
