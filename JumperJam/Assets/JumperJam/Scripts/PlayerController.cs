@@ -138,12 +138,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         {
             playerState = PlayerState.Die;
             Die();
+			//reset difficult
+			MapMgr.Instance.resetDifficult ();
         }
 
 		if (col.CompareTag ("DeathArea")) 
 		{
 			playerState = PlayerState.Die;
 			Die();
+			//reset difficult
+			MapMgr.Instance.resetDifficult ();
 		}
        
     }
