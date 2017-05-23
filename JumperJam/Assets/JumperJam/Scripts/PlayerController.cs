@@ -142,18 +142,18 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
 				});
 			}
-			StartCoroutine(Bound(col));
-			if (notTouchOne == true) 
-			{
-				//Jump ();
-				transform.eulerAngles = new Vector3 (0,0,0);
-				if (moveX > 0 || Input.acceleration.x > 0) {
-					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
-				} else if (moveX <= 0 || Input.acceleration.x < 0){
-					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
-				}
-				notTouchOne = false;
-			}
+
+//			if (notTouchOne == true) 
+//			{
+//				//Jump ();
+//				transform.eulerAngles = new Vector3 (0,0,0);
+//				if (moveX > 0 || Input.acceleration.x > 0) {
+//					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
+//				} else if (moveX <= 0 || Input.acceleration.x < 0){
+//					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
+//				}
+//				notTouchOne = false;
+//			}
         }
         if (col.CompareTag("Enemy"))
         {

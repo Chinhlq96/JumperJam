@@ -10,7 +10,7 @@ public class PlatformController : MonoBehaviour {
 
 	void OnEnable()
 	{
-		DOTween.Init();
+		//DOTween.Init();
 		Bouncing = false;
 	}
 	// Use this for initialization
@@ -34,11 +34,16 @@ public class PlatformController : MonoBehaviour {
 			Bouncing = true;
 			Debug.Log ("one");
 			//Vector2 savePos = new Vector2(transform.position.x,transform.position.y);
-			transform.DOLocalMoveY (transform.position.y, 0.01f).OnComplete (() => {
+			transform.DOLocalMoveY (transform.position.y-0.3f, 0.01f).OnComplete (() => {
 				transform.DOLocalMoveY (transform.position.y + 0.3f, 0.01f).OnComplete(() => {
 					Bouncing = false;
 				});
 			});
 		}
+	}
+
+	void OnDisalbe()
+	{
+		
 	}
 }
