@@ -41,6 +41,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     Sprite[] aniSprites;
 
 	public Transform pos;
+	public Transform spawnPlayerPoint;
 	//for testing on editor
 	public float moveSpeed;
 	private float moveX;
@@ -70,6 +71,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerState = PlayerState.Idle;
 		canMoveNow = false;
 		notTouchOne = true;
+
     }
 
     /// <summary>
@@ -81,6 +83,21 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         playerSR.sprite = aniSprites[index];
         playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
     }
+
+	public void resetPosition()
+	{
+		playerTrans.position = spawnPlayerPoint.position;
+	}
+
+	public void resetVelocity()
+	{
+		RG.velocity = Vector3.zero;
+	}
+
+	public void setGravity(int value)
+	{
+		RG.gravityScale = value;
+	}
 
 	void Update () {
 //	   Debug.Log (playerState);
@@ -107,7 +124,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
-		pos += directionX * moveSpeed * 0.1f ;
+		pos += directionX * moveSpeed * 1.5f ;
 		transform.position = pos;
 	}
 
@@ -121,6 +138,14 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 			/*if (notTouchOne == true) 
+			if (transform.position.y > col.transform.position.y) 
+			{
+				col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
+					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
+				});
+			}
+			StartCoroutine(Bound(col));
+			if (notTouchOne == true) 
 			{
 				//Jump ();
 				transform.eulerAngles = new Vector3 (0,0,0);
@@ -134,23 +159,42 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         }
         if (col.CompareTag("Enemy"))
         {
-			if (transform.position.y > col.transform.position.y + 1.5f) {
+
+			if (transform.position.y > col.transform.position.y + 1f) {
 				RG.velocity = new Vector2(0, 0);
 				RG.AddForce(force * 0.7f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
 			} else {
 				playerState = PlayerState.Die;
 				Die ();
+				MapMgr.Instance.resetDifficult ();
+				GameMgr.Instance.GameOver();
 			}
+
         }
 
 		if (col.CompareTag ("DeathArea")) 
 		{
 			playerState = PlayerState.Die;
 			Die();
+		
+			//reset difficult
+			MapMgr.Instance.resetDifficult ();
+			GameMgr.Instance.GameOver();
 		}
        
     }
+
+	IEnumerator Bound(Collider2D col)
+	{
+		if (transform.position.y > col.transform.position.y) 
+						{
+							col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
+								col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
+							});
+						}
+		yield return new WaitForSeconds (0.1f);
+	}
 
     public void OnCollisionEnter2D(Collision2D col)
     {

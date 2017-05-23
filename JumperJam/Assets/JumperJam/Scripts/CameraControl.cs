@@ -7,6 +7,9 @@ public class CameraControl : MonoBehaviour
 	[SerializeField]
 	GameObject player;
 
+	[SerializeField]
+	Transform BeginCameraPoint;
+
 	//Thoi gian camera follow khi chet
 	public float followTime = 0.3f;
 
@@ -18,6 +21,15 @@ public class CameraControl : MonoBehaviour
 	//Check xem da lay distance chua
 	bool checkedDistant;
 
+	public void resetDistant()
+	{
+		distanceFromPlayer = 0f;
+	}
+
+	public void resetCamera()
+	{
+		transform.position = BeginCameraPoint.position;
+	}
 	void Update()
 	{
 
@@ -32,19 +44,22 @@ public class CameraControl : MonoBehaviour
 		}
 
 		//Camera follow khi player chet
-		if (PlayerController.Instance.playerState == 0 &&!followed ) 
-		{
-			//Lay khoang cach giua player va camera
-			if (!checkedDistant) 
-			{
-				distanceFromPlayer = transform.position.y - player.transform.position.y;
-			}
-			checkedDistant = true;
-
-			//Follow player trong thoi gian followTime
-			StartCoroutine ("deathCam");
-
-		}
+//		if (PlayerController.Instance.playerState == 0 &&!followed ) 
+//		{
+//			//Lay khoang cach giua player va camera
+//			if (!checkedDistant) 
+//			{
+//				distanceFromPlayer = transform.position.y - player.transform.position.y;
+//			}
+//			checkedDistant = true;
+//
+//			//Follow player trong thoi gian followTime
+//			StartCoroutine ("deathCam");
+//
+//
+//
+////			StartCoroutine ("stopFalling");
+//		}
 
 	}
 
@@ -55,5 +70,13 @@ public class CameraControl : MonoBehaviour
 		yield return new WaitForSeconds(followTime);
 		followed = true;
 	}
+
+//	IEnumerator stopFalling()
+//	{
+//		yield return new WaitForSeconds (0.3f);
+//		PlayerController.Instance.setGravity (0);
+//		PlayerController.Instance.resetVelocity ();
+//		
+//	}
 
 }

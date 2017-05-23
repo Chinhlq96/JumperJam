@@ -21,7 +21,8 @@ public class Spawn : MonoBehaviour {
 			if (!other.gameObject.GetComponent<Check> ().getStepped ())
 			{	
 
-				this.PostEvent (EventID.GenMap, this);
+				//this.PostEvent (EventID.GenMap, this);
+				MapMgr.Instance.GenMap();
 				other.gameObject.GetComponent<Check> ().setStepped (true);
 			}
 		}
