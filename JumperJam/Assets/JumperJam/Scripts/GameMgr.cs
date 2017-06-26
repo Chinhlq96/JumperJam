@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameMgr : SingletonMonoBehaviour<GameMgr>
 {
     private GameState _gameState;
-	public static int totalPoint;
+	public static int totalCoin;
 
     [SerializeField]
     GameObject[] tapObjects;
@@ -22,10 +22,11 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         set { _gameState = value; }
     }
 
+
     void OnEnable()
     {
         gameState = GameState.Start;
-		totalPoint = 0;
+		totalCoin = 0;
         InputMgr.TapToScreen += TapToScreen;
     }
 
@@ -34,9 +35,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         InputMgr.TapToScreen -= TapToScreen;
     }
 
-
-    
-    /// <summary>
     /// Call from start Button
     /// </summary>
     public void NewGame()
@@ -105,14 +103,18 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         }
     }
 
-	public void AddPoint (int Point)
+	public void AddPoint (int point)
 	{
-		totalPoint += Point;
+		totalCoin += point;
+		var coin = PlayerPrefs.GetInt ("TotalCoin");
+
+		PlayerPrefs.SetInt ("TotalCoin", point + coin);
 	}
 
 	public int ShowTotalPoint()
 	{
-		return totalPoint;
+		totalCoin = PlayerPrefs.GetInt ("TotalCoin");
+		return totalCoin;
 	}
 
 	public void Pause() {

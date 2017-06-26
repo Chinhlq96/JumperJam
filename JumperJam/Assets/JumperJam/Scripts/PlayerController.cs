@@ -40,6 +40,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     [SerializeField]
     Sprite[] aniSprites;
 
+
 	public Transform pos;
 	public Transform spawnPlayerPoint;
 	//for testing on editor
@@ -64,14 +65,17 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     }
 
 
+	private Vector3 startPos;
+	private Vector3 maxPos;
 
     void OnEnable()
     {
+		startPos = transform.position;
+		maxPos = startPos;
 		DOTween.Init();
         playerState = PlayerState.Idle;
 		canMoveNow = false;
 		notTouchOne = true;
-
     }
 
     /// <summary>
@@ -117,8 +121,12 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		
 
 		}
-
-
+		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
+		if ((Mathf.RoundToInt (Mathf.Abs (transform.position.y - startPos.y)) % 5 == 0)&&(transform.position.y > maxPos.y))
+			ScoreMgr.Instance.AddScore (5);
+		if (transform.position.y > maxPos.y) {
+			maxPos = transform.position;
+		}
 	}
 
 	void MoveX (Vector2 directionX)
@@ -162,8 +170,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 			if (transform.position.y > col.transform.position.y + 1f) {
 				RG.velocity = new Vector2(0, 0);
-				RG.AddForce(force * 0.7f, ForceMode2D.Impulse);
+				RG.AddForce(force * 1f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
+				ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
 			} else {
 				playerState = PlayerState.Die;
 				Die ();

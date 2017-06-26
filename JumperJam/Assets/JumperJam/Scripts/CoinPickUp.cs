@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using EventManager;
 
-public class CoinPickUp : SingletonMonoBehaviour<CoinPickUp> {
+public class CoinPickUp : MonoBehaviour {
 
-	[SerializeField]
-	private int Point;
+	private int point = 1;
 
 
 	// Use this for initialization
@@ -24,7 +23,7 @@ public class CoinPickUp : SingletonMonoBehaviour<CoinPickUp> {
 		if (col.CompareTag ("Player")) {
 			gameObject.SetActive (false);
 			// Add Point here
-			GameMgr.Instance.AddPoint(Point);
+			GameMgr.Instance.AddPoint(point);
 			Debug.Log (GameMgr.Instance.ShowTotalPoint ());
 		}
 	}
