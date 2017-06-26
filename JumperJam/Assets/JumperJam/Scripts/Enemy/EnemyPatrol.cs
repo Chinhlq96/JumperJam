@@ -5,6 +5,14 @@ using UnityEngine;
 public class EnemyPatrol : MonoBehaviour 
 {
 	[SerializeField]
+	private int _point;
+
+	public int point {
+		get { return _point;}
+		set { _point = point;}
+	}
+
+	[SerializeField]
 	private Transform[] path;
 	[SerializeField]
 	private Transform firePos;

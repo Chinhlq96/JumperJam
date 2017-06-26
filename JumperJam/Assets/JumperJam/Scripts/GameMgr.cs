@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameMgr : SingletonMonoBehaviour<GameMgr>
 {
     private GameState _gameState;
-	public static int totalPoint;
+	public static int totalCoin;
 
     [SerializeField]
     GameObject[] tapObjects;
@@ -24,11 +24,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         set { _gameState = value; }
     }
 
+
     void OnEnable()
 	{	randomValue = Random.Range (1, 3);
 		Debug.Log (randomValue);
         gameState = GameState.Start;
-		totalPoint = 0;
+		totalCoin = 0;
         InputMgr.TapToScreen += TapToScreen;
 
     }
@@ -38,9 +39,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         InputMgr.TapToScreen -= TapToScreen;
     }
 
-
-    
-    /// <summary>
     /// Call from start Button
     /// </summary>
     public void NewGame()
@@ -50,9 +48,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         gameState = GameState.Wait;
 		MapMgr.Instance.GenStart ();
         ShowTapUI();
-
-
-
     }
 
 //	public void NewGame()
@@ -114,14 +109,30 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         }
     }
 
-	public void AddPoint (int Point)
+	public void AddPoint (int point)
 	{
-		totalPoint += Point;
+		totalCoin += point;
+		var coin = PlayerPrefs.GetInt ("TotalCoin");
+
+		PlayerPrefs.SetInt ("TotalCoin", point + coin);
 	}
 
 	public int ShowTotalPoint()
 	{
-		return totalPoint;
+		totalCoin = PlayerPrefs.GetInt ("TotalCoin");
+		return totalCoin;
+	}
+
+	public void Pause() {
+		gameState = GameState.Wait;
+		Time.timeScale = 0;
+	}
+
+	public void UnPause() {
+		if (gameState == GameState.Wait) {
+			gameState = GameState.Playing;
+			Time.timeScale = 1f;
+		}
 	}
 
 }
