@@ -44,29 +44,39 @@ public class CameraControl : MonoBehaviour
 		}
 
 		//Camera follow khi player chet
-//		if (PlayerController.Instance.playerState == 0 &&!followed ) 
-//		{
-//			//Lay khoang cach giua player va camera
-//			if (!checkedDistant) 
-//			{
-//				distanceFromPlayer = transform.position.y - player.transform.position.y;
-//			}
-//			checkedDistant = true;
-//
-//			//Follow player trong thoi gian followTime
-//			StartCoroutine ("deathCam");
-//
-//
-//
-////			StartCoroutine ("stopFalling");
-//		}
+		if (PlayerController.Instance.playerState == 0 &&!followed &&! player.GetComponent<PlayerController>().groundDeath ) 
+		{
+			//Lay khoang cach giua player va camera
+			if (!checkedDistant) 
+			{
+				distanceFromPlayer = transform.position.y - player.transform.position.y;
+			}
+			checkedDistant = true;
 
+			//Follow player trong thoi gian followTime
+			StartCoroutine ("deathCam");
+
+
+
+//			StartCoroutine ("stopFalling");
+		}
+
+	}
+
+	public void OnTriggerEnter2D(Collider2D col)
+	{
+		if (col.CompareTag ("Ground")) {
+			Destroy (col.gameObject);
+			DestroyObject (col.gameObject);
+		}
 	}
 
 
 	IEnumerator deathCam()
 	{
-		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y - distanceFromPlayer, transform.position.z);
+		//this.transform.position = new Vector3 (transform.position.x, player.transform.position.y - distanceFromPlayer, transform.position.z);
+		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y, transform.position.z);
+
 		yield return new WaitForSeconds(followTime);
 		followed = true;
 	}

@@ -53,6 +53,12 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	//player can move horizontal or not
 	public bool canMoveNow;
 
+	//Check ground death at start
+	private bool groundTouched;
+	public bool groundDeath;
+
+
+
     public PlayerState playerState
     {
         get { return _playerState; }
@@ -100,7 +106,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 	void Update () {
-//	   Debug.Log (playerState);
 		//move player with phone accelerater
 
 		if (canMoveNow == true ) {
@@ -118,13 +123,44 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 		}
 
+		//teleport player to right/left if over go
+
+		//World position -> Screen position  ( from random world number to 0~Screen.Width number )
+		Vector3 scrPos = Camera.main.WorldToScreenPoint(transform.position);
+		if (scrPos.x < -10)
+			TeleportToRight (scrPos);
+		if (scrPos.x > Screen.width + 10)
+			TeleportToLeft (scrPos);
+
 
 	}
+
+
+	void TeleportToRight(Vector3 scrPos)
+	{
+		// position we want to move to ( Screen position )
+		Vector3 goalScrPos = new Vector3 (Screen.width + 10, scrPos.y, scrPos.z);
+		// Convert above position to world position
+		Vector3 targetWorldPos = Camera.main.ScreenToWorldPoint (goalScrPos);
+		// then assign to player position 
+		transform.position = targetWorldPos;
+	}
+
+	void TeleportToLeft (Vector3 scrPos)
+	{
+		// position we want to move to ( Screen position )
+		Vector3 goalScrPos = new Vector3 (-10, scrPos.y, scrPos.z);
+		// Convert above position to world position
+		Vector3 targetScrPos = Camera.main.ScreenToWorldPoint (goalScrPos);
+		// then assign to player position 
+		transform.position = targetScrPos;
+	}
+
 
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
-		pos += directionX * moveSpeed * 0.6f ;
+		pos += directionX * moveSpeed * 1.5f ;
 		transform.position = pos;
 	}
 
@@ -136,31 +172,27 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 			//make platform bounce
 
-			if (transform.position.y > col.transform.position.y) 
+
+			if (notTouchOne == true) 
 			{
-				col.transform.DOLocalMoveY (col.transform.localPosition.y - 0.3f, 0.1f).OnComplete (() => {
-					col.transform.DOLocalMoveY (col.transform.localPosition.y + 0.3f, 0.1f);
-				});
+				//Jump ();
+				transform.eulerAngles = new Vector3 (0,0,0);
+				if (moveX > 0 || Input.acceleration.x > 0) {
+					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
+				} else if (moveX <= 0 || Input.acceleration.x < 0){
+					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
+				}
+				notTouchOne = false;
 			}
 
-//			if (notTouchOne == true) 
-//			{
-//				//Jump ();
-//				transform.eulerAngles = new Vector3 (0,0,0);
-//				if (moveX > 0 || Input.acceleration.x > 0) {
-//					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
-//				} else if (moveX <= 0 || Input.acceleration.x < 0){
-//					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
-//				}
-//				notTouchOne = false;
-//			}
+
         }
         if (col.CompareTag("Enemy"))
         {
 
 			if (transform.position.y > col.transform.position.y + 1f) {
 				RG.velocity = new Vector2(0, 0);
-				RG.AddForce(force * 0.7f, ForceMode2D.Impulse);
+				RG.AddForce(force * 0.05f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
 			} else {
 				playerState = PlayerState.Die;
@@ -180,8 +212,29 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			MapMgr.Instance.resetDifficult ();
 			GameMgr.Instance.GameOver();
 		}
+
+		if (col.CompareTag ("Ground")) 
+		{
+			if (groundTouched) {
+				playerState = PlayerState.Die;
+				Die ();
+				groundDeath = true;
+
+
+				//reset difficult
+				MapMgr.Instance.resetDifficult ();
+				GameMgr.Instance.GameOver ();
+			}
+		}
        
     }
+
+	public void OnTriggerExit2D(Collider2D col)
+	{
+		if (col.CompareTag ("Ground")) {
+			groundTouched = true;
+		}
+	}
 
 	IEnumerator Bound(Collider2D col)
 	{
@@ -219,14 +272,15 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     {
         RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
+
     }
 
 void FixedUpdate()
     {
 
-//		float moveHorizontal = Input.GetAxis ("Horizontal");
-//		Vector3 movement = new Vector3 (moveHorizontal,0,0);
-//		transform.position += movement * 20f * Time.deltaTime;
+		float moveHorizontal = Input.GetAxis ("Horizontal");
+		Vector3 movement = new Vector3 (moveHorizontal,0,0);
+		transform.position += movement * 20f * Time.deltaTime;
 
 
         if (RG.velocity.y < 0 && playerState != PlayerState.Die)

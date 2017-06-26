@@ -15,6 +15,8 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	[SerializeField]
 	GameObject Camera;
 
+	public int randomValue = 0;
+
 
     public GameState gameState
     {	
@@ -23,10 +25,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     }
 
     void OnEnable()
-    {
+	{	randomValue = Random.Range (1, 3);
+		Debug.Log (randomValue);
         gameState = GameState.Start;
 		totalPoint = 0;
         InputMgr.TapToScreen += TapToScreen;
+
     }
 
     void OnDisable()
@@ -78,8 +82,10 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void LoadGameScene()
 	{
-		SceneManager.LoadScene ("Game");
-		UIManager.Instance.ShowPage ("GamePage");
+			SceneManager.LoadScene ("GameIce");
+
+			UIManager.Instance.ShowPage ("GamePage");
+
 	}
 
     public void GameOver()

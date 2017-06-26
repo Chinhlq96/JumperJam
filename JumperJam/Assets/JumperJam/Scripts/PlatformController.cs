@@ -7,11 +7,20 @@ using DG.Tweening;
 public class PlatformController : MonoBehaviour {
 
 	private bool Bouncing;
+	public Sprite junglePlatformStyle;
+	public Sprite icePlatformStyle;
+
+
 
 	void OnEnable()
 	{
 		//DOTween.Init();
 		Bouncing = false;
+		Debug.Log (GameMgr.Instance.randomValue);
+		if(GameMgr.Instance.randomValue==1)
+	GetComponent<SpriteRenderer> ().sprite =junglePlatformStyle ;
+		if(GameMgr.Instance.randomValue==2)
+			GetComponent<SpriteRenderer> ().sprite =icePlatformStyle ;
 	}
 	// Use this for initialization
 	public void OnTriggerEnter2D(Collider2D col)
@@ -32,10 +41,11 @@ public class PlatformController : MonoBehaviour {
 	{
 		if (Bouncing == false) {
 			Bouncing = true;
-			Debug.Log ("one");
 			//Vector2 savePos = new Vector2(transform.position.x,transform.position.y);
-			transform.DOLocalMoveY (transform.position.y-0.3f, 0.01f).OnComplete (() => {
-				transform.DOLocalMoveY (transform.position.y + 0.3f, 0.01f).OnComplete(() => {
+
+			transform.DOMoveY (transform.position.y - 0.3f, 0.1f).OnComplete (() => {
+				transform.DOMoveY (transform.position.y + 0.3f, 0.1f).OnComplete(() => {
+
 					Bouncing = false;
 				});
 			});
