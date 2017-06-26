@@ -20,7 +20,7 @@ public class PlatformController : MonoBehaviour {
 		if (col.CompareTag("Player"))
 		{
 			//Debug.Log ("1");
-			if (col.transform.position.y > transform.position.y + 0.2f ) 
+			if (col.transform.position.y > transform.position.y + 0.3f ) 
 			{
 				Bounce ();
 			}
@@ -32,8 +32,10 @@ public class PlatformController : MonoBehaviour {
 	{
 		if (Bouncing == false) {
 			Bouncing = true;
-			transform.DOLocalMoveY (transform.position.y - 0.3f, 0.1f).OnComplete (() => {
-				transform.DOLocalMoveY (transform.position.y + 0.3f, 0.1f).OnComplete(() => {
+			//Debug.Log ("one");
+			//Vector2 savePos = new Vector2(transform.position.x,transform.position.y);
+			transform.DOMoveY (transform.position.y - 0.3f, 0.1f).OnComplete (() => {
+				transform.DOMoveY (transform.position.y + 0.3f, 0.1f).OnComplete(() => {
 					Bouncing = false;
 				});
 			});

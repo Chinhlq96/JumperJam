@@ -8,35 +8,35 @@ public class EnemySpawn : MonoBehaviour {
 
 	void OnEnable() 
 	{	
-		StartCoroutine (WaitAndSpawn (0.0f));
+		StartCoroutine (WaitAndSpawn (0.5f));
 		//Spawn ();
 
 	}
-	void Spawn()
-	{
-		int randomValue = 0;
-		randomValue = Random.Range (1, 7);
-
-		{
-			switch (randomValue) 
-			{
-			case 1:
-				ContentMgr.Instance.GetItem ("Enemy1", transform.position);
-				break;
-			case 2:
-				ContentMgr.Instance.GetItem ("Enemy2", transform.position);
-				break;
-			case 3:
-				ContentMgr.Instance.GetItem ("Enemy3", transform.position);
-				break;
-			case 4:
-				ContentMgr.Instance.GetItem ("Enemy4", transform.position);
-				break;
-			default:
-				break;
-			}
-		}
-	}
+//	void Spawn()
+//	{
+//		int randomValue = 0;
+//		randomValue = Random.Range (1, 7);
+//
+//		{
+//			switch (randomValue) 
+//			{
+//			case 1:
+//				ContentMgr.Instance.GetItem ("Enemy1", transform.position);
+//				break;
+//			case 2:
+//				ContentMgr.Instance.GetItem ("Enemy2", transform.position);
+//				break;
+//			case 3:
+//				ContentMgr.Instance.GetItem ("Enemy3", transform.position);
+//				break;
+//			case 4:
+//				ContentMgr.Instance.GetItem ("Enemy4", transform.position);
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//	}
 	IEnumerator WaitAndSpawn(float waitTime)
 	{
 		//
@@ -48,10 +48,8 @@ public class EnemySpawn : MonoBehaviour {
 
 			if (gameObject.name == "SpawnEnemyPoint") 
 			{
-
-
 				if (gameObject.transform.parent.CompareTag ("PlatformEasy"))
-				randomValue = Random.Range (1, 14);
+				randomValue = Random.Range (1, 10);
 				else if (gameObject.transform.parent.CompareTag ("PlatformNormal"))
 				randomValue = Random.Range (1, 10);
 				else 
