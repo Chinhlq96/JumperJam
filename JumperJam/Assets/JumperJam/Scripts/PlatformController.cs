@@ -32,7 +32,7 @@ public class PlatformController : MonoBehaviour {
 	{
 		if (Bouncing == false) {
 			Bouncing = true;
-			Debug.Log ("one");
+			//Debug.Log ("one");
 			//Vector2 savePos = new Vector2(transform.position.x,transform.position.y);
 			transform.DOMoveY (transform.position.y - 0.3f, 0.1f).OnComplete (() => {
 				transform.DOMoveY (transform.position.y + 0.3f, 0.1f).OnComplete(() => {

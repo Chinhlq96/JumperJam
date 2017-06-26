@@ -46,9 +46,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         gameState = GameState.Wait;
 		MapMgr.Instance.GenStart ();
         ShowTapUI();
-
-
-
     }
 
 //	public void NewGame()
@@ -116,6 +113,18 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	public int ShowTotalPoint()
 	{
 		return totalPoint;
+	}
+
+	public void Pause() {
+		gameState = GameState.Wait;
+		Time.timeScale = 0;
+	}
+
+	public void UnPause() {
+		if (gameState == GameState.Wait) {
+			gameState = GameState.Playing;
+			Time.timeScale = 1f;
+		}
 	}
 
 }
