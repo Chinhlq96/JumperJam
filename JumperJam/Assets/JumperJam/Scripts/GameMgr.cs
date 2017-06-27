@@ -26,9 +26,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
     void OnEnable()
-	{	randomValue = Random.Range (1, 6);
+	{	
+		//random in 5 map styles
+		randomValue = Random.Range (1, 6);
 		Debug.Log (randomValue);
-        gameState = GameState.Start;
+        
+		gameState = GameState.Start;
 		totalCoin = 0;
         InputMgr.TapToScreen += TapToScreen;
 
@@ -50,30 +53,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         ShowTapUI();
     }
 
-//	public void NewGame()
-//	{
-//		PlayerController.Instance.playerState = PlayerState.Jump;
-//		PlayerController.Instance.gameObject.transform.localRotation = Quaternion.Euler (0, 0, 0);
-//		PlayerController.Instance.setGravity (1);
-//		PlayerController.Instance.resetPosition ();
-//		PlayerController.Instance.UpdateState ();
-//		PlayerController.Instance.resetVelocity ();
-//		//Camera.transform.GetComponent<CamareControler> ().resetDistant ();
-//		Camera.transform.GetComponent<CameraControl>().resetCamera();
-//		Camera.transform.position=new Vector3(0,0,-100);
-//		gameState = GameState.Wait;
-//		MapMgr.Instance.GenStart ();
-//		ShowTapUI();
-//		UIManager.Instance.ShowPage("GamePage");
-//	}
-//	IEnumerator Camareee()
-//	{
-//		yield return new WaitForSeconds (0.1f);
-//		Camera.transform.position=new Vector3(0,0,-100);
-//	}
-
-
-
 
 	public void LoadGameScene()
 	{
@@ -85,7 +64,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
     public void GameOver()
     {
-        //Debug.Log("gameover");
 
 		UIManager.Instance.ShowPage("GameOverPage");
     }
@@ -104,9 +82,11 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         {
             gameState = GameState.Playing;
             ShowTapUI();
-            PlayerController.Instance.Jump();
+			PlayerController.Instance.resetVelocity ();
+          	PlayerController.Instance.Jump();
 			PlayerController.Instance.canMoveNow = true;
         }
+		//PlayerController.Instance.Jump();
     }
 
 	public void AddPoint (int point)
