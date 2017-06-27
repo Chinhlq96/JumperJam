@@ -26,12 +26,14 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
     void OnEnable()
+
 	{	
 		//random in 5 map styles
 		randomValue = Random.Range (1, 6);
 		Debug.Log (randomValue);
         
 		gameState = GameState.Start;
+
 		totalCoin = 0;
         InputMgr.TapToScreen += TapToScreen;
 
@@ -84,6 +86,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
             ShowTapUI();
 			PlayerController.Instance.resetVelocity ();
           	PlayerController.Instance.Jump();
+
 			PlayerController.Instance.canMoveNow = true;
         }
 		//PlayerController.Instance.Jump();

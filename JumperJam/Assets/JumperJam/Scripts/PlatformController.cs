@@ -20,7 +20,7 @@ public class PlatformController : MonoBehaviour {
 	{
 		//DOTween.Init();
 		Bouncing = false;
-		Debug.Log (GameMgr.Instance.randomValue);
+		//Debug.Log (GameMgr.Instance.randomValue);
 		if(GameMgr.Instance.randomValue==1)
 			GetComponent<SpriteRenderer> ().sprite =junglePlatformStyle ;
 		if(GameMgr.Instance.randomValue==2)

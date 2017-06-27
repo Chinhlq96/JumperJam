@@ -83,7 +83,9 @@ public class EnemySpawn : MonoBehaviour {
 			case 8:
 				ContentMgr.Instance.GetItem ("Enemy7", transform.position);
 				break;
-				
+			case 9:
+				ContentMgr.Instance.GetItem ("Enemy8", transform.position);
+				break;
 				default:
 					break;
 				}
@@ -106,12 +108,15 @@ public class EnemySpawn : MonoBehaviour {
 				case 1:
 					ContentMgr.Instance.GetItem ("EnemyFly1", transform.position);
 					break;
-			case 2:
+				case 2:
 				ContentMgr.Instance.GetItem ("Coin", transform.position);
 				break;
 				case 3:
 					ContentMgr.Instance.GetItem ("EnemyFly2", transform.position);
 					break;
+				case 4:
+				ContentMgr.Instance.GetItem ("EnemyFly3", transform.position);
+				break;
 				default:
 					break;
 				}
