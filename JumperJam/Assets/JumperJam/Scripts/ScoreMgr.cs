@@ -17,9 +17,14 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	Text bestScoreText;
 	[SerializeField]
 	Image bestScoreImage;
+	[SerializeField]
+	Text coinsText;
+	[SerializeField]
+	Text coinsTextChar;
 	// Use this for initialization
 	void Start () {
 		score = 0;
+
 		bestScore = PlayerPrefs.GetInt ("BestScore");
 	}
 	
@@ -36,6 +41,9 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 		gameoverScoreText.text = "" + score;
 		int best = PlayerPrefs.GetInt ("BestScore");
 		bestScoreText.text = "" + best;
+		int coins = PlayerPrefs.GetInt ("TotalCoin");
+		coinsText.text = "x" + coins;
+		coinsTextChar.text = "x" + coins;
 	}
 
 	public int getScore()
@@ -45,5 +53,17 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 
 	public void AddScore (int _score) {
 		score += _score;
+	}
+
+	public void AddCoin (int point)
+	{
+		var coin = PlayerPrefs.GetInt ("TotalCoin");
+		PlayerPrefs.SetInt ("TotalCoin", point + coin);
+	}
+
+	public void SubCoin (int point)
+	{
+		var coin = PlayerPrefs.GetInt ("TotalCoin");
+		PlayerPrefs.SetInt ("TotalCoin", -point + coin);
 	}
 }
