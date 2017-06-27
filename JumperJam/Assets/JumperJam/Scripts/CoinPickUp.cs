@@ -23,8 +23,7 @@ public class CoinPickUp : MonoBehaviour {
 		if (col.CompareTag ("Player")) {
 			gameObject.SetActive (false);
 			// Add Point here
-			GameMgr.Instance.AddPoint(point);
-			Debug.Log (GameMgr.Instance.ShowTotalPoint ());
+			ScoreMgr.Instance.AddPoint(point);
 		}
 	}
 		

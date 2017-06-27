@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameMgr : SingletonMonoBehaviour<GameMgr>
 {
     private GameState _gameState;
-	public static int totalCoin;
 
     [SerializeField]
     GameObject[] tapObjects;
@@ -17,7 +16,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public int randomValue = 0;
 
-
     public GameState gameState
     {	
         get { return _gameState; }
@@ -26,10 +24,10 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
     void OnEnable()
-	{	randomValue = Random.Range (1, 6);
+	{	
+		randomValue = Random.Range (1, 6);
 		//Debug.Log (randomValue);
         gameState = GameState.Start;
-		totalCoin = 0;
         InputMgr.TapToScreen += TapToScreen;
 
     }
@@ -77,16 +75,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void LoadGameScene()
 	{
-			SceneManager.LoadScene ("GameIce");
-
-			UIManager.Instance.ShowPage ("GamePage");
-
+		SceneManager.LoadScene ("GameIce");
+		UIManager.Instance.ShowPage ("GamePage");
 	}
 
     public void GameOver()
     {
-        //Debug.Log("gameover");
-
 		UIManager.Instance.ShowPage("GameOverPage");
     }
 
@@ -110,19 +104,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         }
     }
 
-	public void AddPoint (int point)
-	{
-		totalCoin += point;
-		var coin = PlayerPrefs.GetInt ("TotalCoin");
 
-		PlayerPrefs.SetInt ("TotalCoin", point + coin);
-	}
-
-	public int ShowTotalPoint()
-	{
-		totalCoin = PlayerPrefs.GetInt ("TotalCoin");
-		return totalCoin;
-	}
 
 	public void Pause() {
 		gameState = GameState.Pause;

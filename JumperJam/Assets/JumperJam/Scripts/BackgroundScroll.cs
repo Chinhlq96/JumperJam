@@ -22,27 +22,29 @@ public class BackgroundScroll : MonoBehaviour {
 	public Material midTree;
 	public Material sideTree;
 	public Material subTree;
+	private MeshRenderer meshRen;
 	private Transform camera;
 	float lastCameraPos = 0;
 	Vector2 offset = new Vector2 (0, 0);
 	void Start()
 	{
+		meshRen = GetComponent<MeshRenderer> ();
 		if (GameMgr.Instance.randomValue == 1) 
 		{
 		
 			if (this.name == "Mid") 
 			{
-				GetComponent<MeshRenderer> ().material = midJung;
+				meshRen.material = midJung;
 			}
 		
 		
 			if (this.name == "Side") 
 			{
-				GetComponent<MeshRenderer> ().material = sideJung;
+				meshRen.material = sideJung;
 			}
 			if (this.name == "Sub") 
 			{
-				GetComponent<MeshRenderer> ().material = subJung;
+				meshRen.material = subJung;
 			}
 		}
 
@@ -51,16 +53,16 @@ public class BackgroundScroll : MonoBehaviour {
 
 			if (this.name == "Mid") 
 			{
-				GetComponent<MeshRenderer> ().material = midIce;
+				meshRen.material = midIce;
 			}
 
 			if (this.name == "Side")
 			{
-				GetComponent<MeshRenderer> ().material = sideIce;
+				meshRen.material = sideIce;
 			}
 			if (this.name == "Sub") {
 				
-				GetComponent<MeshRenderer> ().material = subIce;
+				meshRen.material = subIce;
 			}
 		}
 		if (GameMgr.Instance.randomValue == 3) 
@@ -68,17 +70,17 @@ public class BackgroundScroll : MonoBehaviour {
 
 			if (this.name == "Mid") 
 			{
-				GetComponent<MeshRenderer> ().material = midBean;
+				meshRen.material = midBean;
 			}
 
 
 			if (this.name == "Side") 
 			{
-				GetComponent<MeshRenderer> ().material = sideBean;
+				meshRen.material = sideBean;
 			}
 			if (this.name == "Sub") 
 			{
-				GetComponent<MeshRenderer> ().material = subBean;
+				meshRen.material = subBean;
 			}
 		}
 		if (GameMgr.Instance.randomValue == 4) 
@@ -86,17 +88,17 @@ public class BackgroundScroll : MonoBehaviour {
 
 			if (this.name == "Mid") 
 			{
-				GetComponent<MeshRenderer> ().material = midPoison;
+				meshRen.material = midPoison;
 			}
 
 
 			if (this.name == "Side") 
 			{
-				GetComponent<MeshRenderer> ().material = sidePoison;
+				meshRen.material = sidePoison;
 			}
 			if (this.name == "Sub") 
 			{
-				GetComponent<MeshRenderer> ().material = subPoison;
+				meshRen.material = subPoison;
 			}
 		}
 		if (GameMgr.Instance.randomValue == 5) 
@@ -104,17 +106,17 @@ public class BackgroundScroll : MonoBehaviour {
 
 			if (this.name == "Mid") 
 			{
-				GetComponent<MeshRenderer> ().material = midTree;
+				meshRen.material = midTree;
 			}
 
 
 			if (this.name == "Side") 
 			{
-				GetComponent<MeshRenderer> ().material = sideTree;
+				meshRen.material = sideTree;
 			}
 			if (this.name == "Sub") 
 			{
-				GetComponent<MeshRenderer> ().material = subTree;
+				meshRen.material = subTree;
 			}
 		}
 		camera = Camera.main.transform;
