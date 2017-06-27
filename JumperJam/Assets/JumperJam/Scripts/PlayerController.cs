@@ -267,9 +267,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     public void Jump()
     {
+		Debug.Log (RG.velocity.y);
         if (RG.velocity.y <= 0)
         {
-
             if (playerState == PlayerState.Die) return;
             RG.velocity = new Vector2(0, 0);
             RG.AddForce(force, ForceMode2D.Impulse);
