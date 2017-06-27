@@ -71,8 +71,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     }
 
 
+
 	private Vector3 startPos;
-	private Vector3 maxPos;
+	public Vector3 maxPos;
 
     void OnEnable()
     {
@@ -112,7 +113,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	void Update () {
 		//move player with phone accelerater
 
-		if (canMoveNow == true ) {
+		if (canMoveNow == true && GameMgr.Instance.gameState!=GameState.Pause) {
 			Vector2 pos = transform.position;
 			pos += new Vector2 (Input.acceleration.x, 0) * moveSpeed * 0.5f;
 			transform.position = pos;
@@ -140,7 +141,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			ScoreMgr.Instance.AddScore (5);
 		if (transform.position.y > maxPos.y) {
 			maxPos = transform.position;
-
+		}
 	}
 
 
@@ -286,17 +287,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 void FixedUpdate()
     {
+		if (canMoveNow == true && GameMgr.Instance.gameState != GameState.Pause) {
+			float moveHorizontal = Input.GetAxis ("Horizontal");
+			Vector3 movement = new Vector3 (moveHorizontal, 0, 0);
+			transform.position += movement * 20f * Time.deltaTime;
 
-		float moveHorizontal = Input.GetAxis ("Horizontal");
-		Vector3 movement = new Vector3 (moveHorizontal,0,0);
-		transform.position += movement * 20f * Time.deltaTime;
 
-
-        if (RG.velocity.y < 0 && playerState != PlayerState.Die)
-        {
-            playerState = PlayerState.Idle;
-        }
-
+			if (RG.velocity.y < 0 && playerState != PlayerState.Die) {
+				playerState = PlayerState.Idle;
+			}
+		}
     }
 
 }

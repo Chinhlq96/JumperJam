@@ -83,7 +83,7 @@ public class EnemyPatrol : MonoBehaviour
 		yield return new WaitForSeconds (.5f);
 		if (firePos != null) 
 		{
-			var fireball = ContentMgr.Instance.GetItem<FireballController> ("EnemyFireball", firePos.position);
+			var fireball = ContentMgr.Instance.GetItem<FireballController> ("EnemyFireBall", firePos.position);
 			fireball.Shoot (shootSpeed * transform.localScale.x);
 			yield return new WaitForSeconds (.5f);
 			if (fireball != null)
@@ -98,9 +98,9 @@ public class EnemyPatrol : MonoBehaviour
 		{
 			string typeBall;
 			if (isFlower)
-				typeBall = "EnemyFireball";
+				typeBall = "EnemyFireBall";
 			else
-				typeBall = "EnemySnowball";
+				typeBall = "EnemySnowBall";
 			var fireball = ContentMgr.Instance.GetItem<FireballController> (typeBall, firePos.position);
 			if (!isFlower)
 				fireball.Shoot (-shootSpeed * transform.localScale.x);

@@ -26,9 +26,9 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 		}
 	}
 
-	public void SetScore (int _score) {
-		if (score <= _score )
-			score = _score;
+	public int getScore()
+	{
+		return score;
 	}
 
 	public void AddScore (int _score) {

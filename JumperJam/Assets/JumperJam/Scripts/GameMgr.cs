@@ -26,7 +26,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
     void OnEnable()
-	{	randomValue = Random.Range (1, 3);
+	{	randomValue = Random.Range (1, 6);
 		Debug.Log (randomValue);
         gameState = GameState.Start;
 		totalCoin = 0;
@@ -124,12 +124,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	}
 
 	public void Pause() {
-		gameState = GameState.Wait;
+		gameState = GameState.Pause;
 		Time.timeScale = 0;
 	}
 
 	public void UnPause() {
-		if (gameState == GameState.Wait) {
+		if (gameState == GameState.Pause) {
 			gameState = GameState.Playing;
 			Time.timeScale = 1f;
 		}
@@ -139,8 +139,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 public enum GameState
 {
-    Start,
+    Start=0,
     Wait,
+	Pause,
     Playing,
     GameOver
 }

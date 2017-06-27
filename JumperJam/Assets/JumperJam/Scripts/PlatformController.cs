@@ -9,7 +9,11 @@ public class PlatformController : MonoBehaviour {
 	private bool Bouncing;
 	public Sprite junglePlatformStyle;
 	public Sprite icePlatformStyle;
+	public Sprite beanPlatformStyle;
+	public Sprite treePlatformStyle;
+	public Sprite poisonPlatformStyle;
 
+	private bool changed;
 
 
 	void OnEnable()
@@ -18,10 +22,28 @@ public class PlatformController : MonoBehaviour {
 		Bouncing = false;
 		Debug.Log (GameMgr.Instance.randomValue);
 		if(GameMgr.Instance.randomValue==1)
-	GetComponent<SpriteRenderer> ().sprite =junglePlatformStyle ;
+			GetComponent<SpriteRenderer> ().sprite =junglePlatformStyle ;
 		if(GameMgr.Instance.randomValue==2)
 			GetComponent<SpriteRenderer> ().sprite =icePlatformStyle ;
+		if(GameMgr.Instance.randomValue==3)
+			GetComponent<SpriteRenderer> ().sprite =beanPlatformStyle ;
+		if(GameMgr.Instance.randomValue==4)
+			GetComponent<SpriteRenderer> ().sprite =poisonPlatformStyle ;
+		if(GameMgr.Instance.randomValue==5)
+			GetComponent<SpriteRenderer> ().sprite =treePlatformStyle ;
 	}
+
+	//bulshitttttttttttttttttttttttttttttttttttttttttttttttttttt
+//	void Update()
+//	{
+//		if (ScoreMgr.Instance.getScore () >= 300) {
+//			if(GameMgr.Instance.randomValue==2)
+//			GetComponent<SpriteRenderer> ().sprite =junglePlatformStyle ;
+//			if(GameMgr.Instance.randomValue==1)
+//				GetComponent<SpriteRenderer> ().sprite =icePlatformStyle ;
+//			
+//		}
+//	}
 	// Use this for initialization
 	public void OnTriggerEnter2D(Collider2D col)
 	{

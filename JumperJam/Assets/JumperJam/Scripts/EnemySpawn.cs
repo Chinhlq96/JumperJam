@@ -49,11 +49,11 @@ public class EnemySpawn : MonoBehaviour {
 			if (gameObject.name == "SpawnEnemyPoint") 
 			{
 				if (gameObject.transform.parent.CompareTag ("PlatformEasy"))
-				randomValue = Random.Range (1, 10);
+				randomValue = Random.Range (1, 15);
 				else if (gameObject.transform.parent.CompareTag ("PlatformNormal"))
-				randomValue = Random.Range (1, 10);
+				randomValue = Random.Range (1, 13);
 				else 
-				randomValue = Random.Range (1, 7);
+				randomValue = Random.Range (1, 10);
 				
 
 				switch (randomValue)
@@ -70,6 +70,20 @@ public class EnemySpawn : MonoBehaviour {
 				case 4:
 					ContentMgr.Instance.GetItem ("Enemy4", transform.position);
 					break;
+				case 5:
+				ContentMgr.Instance.GetItem ("Coin", transform.position);
+				break;
+
+			case 6:
+				ContentMgr.Instance.GetItem ("Enemy5", transform.position);
+				break;
+			case 7:
+				ContentMgr.Instance.GetItem ("Enemy6", transform.position);
+				break;
+			case 8:
+				ContentMgr.Instance.GetItem ("Enemy7", transform.position);
+				break;
+				
 				default:
 					break;
 				}
@@ -86,17 +100,18 @@ public class EnemySpawn : MonoBehaviour {
 				randomValue = Random.Range (1, 6);
 				else 
 				randomValue = Random.Range (1, 3);
-
-				
-
+			
 				switch (randomValue) 
 				{
 				case 1:
 					ContentMgr.Instance.GetItem ("EnemyFly1", transform.position);
 					break;
-//				case 2:
-//					ContentMgr.Instance.GetItem ("EnemyFly2", transform.position);
-//					break;
+			case 2:
+				ContentMgr.Instance.GetItem ("Coin", transform.position);
+				break;
+				case 3:
+					ContentMgr.Instance.GetItem ("EnemyFly2", transform.position);
+					break;
 				default:
 					break;
 				}
