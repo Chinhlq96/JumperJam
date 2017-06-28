@@ -58,7 +58,7 @@ public class CameraControl : MonoBehaviour
 
 
 
-//			StartCoroutine ("stopFalling");
+
 		}
 
 	}
@@ -70,6 +70,26 @@ public class CameraControl : MonoBehaviour
 			DestroyObject (col.gameObject);
 		}
 	}
+
+
+//	//if (PlayerController.Instance.playerState == 0 &&!followed &&! player.GetComponent<PlayerController>().groundDeath ) 
+//	public void followOnDeath()
+//	{
+//		if (!followed && !player.GetComponent<PlayerController> ().groundDeath) 
+//		{
+//			//Lay khoang cach giua player va camera
+//			if (!checkedDistant) {
+//				distanceFromPlayer = transform.position.y - player.transform.position.y;
+//			}
+//			checkedDistant = true;
+//
+//			//Follow player trong thoi gian followTime
+//			StartCoroutine ("deathCam");
+//		}
+//
+//
+//
+//	}
 
 
 	IEnumerator deathCam()

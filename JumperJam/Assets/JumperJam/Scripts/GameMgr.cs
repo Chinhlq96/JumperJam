@@ -14,6 +14,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	[SerializeField]
 	GameObject Camera;
 
+
+
+
 	public int randomValue = 0;
 
     public GameState gameState
@@ -58,9 +61,10 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
     public void GameOver()
     {
-
-		UIManager.Instance.ShowPage("GameOverPage");
+		StartCoroutine ("gameOver");
+	//UIManager.Instance.ShowPage("GameOverPage");
     }
+		
 
     void ShowTapUI()
     {
@@ -86,16 +90,25 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
 
-	public void Pause() {
+	public void Pause() 
+	{
 		gameState = GameState.Pause;
 		Time.timeScale = 0;
 	}
 
-	public void UnPause() {
-		if (gameState == GameState.Pause) {
+	public void UnPause() 
+	{
+		if (gameState == GameState.Pause) 
+		{
 			gameState = GameState.Playing;
 			Time.timeScale = 1f;
 		}
+	}
+
+	IEnumerator gameOver()
+	{
+		yield return new WaitForSeconds (1);
+		UIManager.Instance.ShowPage("GameOverPage");
 	}
 
 }

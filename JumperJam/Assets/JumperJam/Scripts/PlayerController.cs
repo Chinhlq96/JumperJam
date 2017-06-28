@@ -31,6 +31,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     [SerializeField]
     Transform playerTrans;
 
+	[SerializeField]
+	private Transform[] backGround;
 
     /// <summary>
     /// 1 die 
@@ -58,7 +60,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	private bool groundTouched;
 	public bool groundDeath;
 
-
+	//Camera follow 
+	public GameObject camera;
 
     public PlayerState playerState
     {
@@ -199,44 +202,37 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		if (col.CompareTag("Enemy")||col.CompareTag("Bullet"))
         {
 
-			if ((transform.position.y > col.transform.position.y + 1f)&&!col.CompareTag("Bullet")) {
+			if ((transform.position.y > col.transform.position.y + 1f)&&!col.CompareTag("Bullet"))
+			{
 				RG.velocity = new Vector2(0, 0);
 				RG.AddForce(force * 1f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
 				ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
-			} else {
-				playerState = PlayerState.Die;
+			} 
+			else 
+			{
 				Die ();
-				ScoreMgr.Instance.UpdateGameOverScore ();
-				MapMgr.Instance.resetDifficult ();
-				GameMgr.Instance.GameOver();
 			}
 
         }
 
 		if (col.CompareTag ("DeathArea")) 
 		{
-			playerState = PlayerState.Die;
+
 			Die();
-			ScoreMgr.Instance.UpdateGameOverScore ();
-			//reset difficult
-			MapMgr.Instance.resetDifficult ();
-			GameMgr.Instance.GameOver();
+
 		}
 
 		if (col.CompareTag ("Ground")) 
 		{
-			if (groundTouched) {
-				playerState = PlayerState.Die;
+			if (groundTouched) 
+			{
+
 				Die ();
-				ScoreMgr.Instance.UpdateGameOverScore ();
 
 				groundDeath = true;
+			
 
-
-				//reset difficult
-				MapMgr.Instance.resetDifficult ();
-				GameMgr.Instance.GameOver ();
 			}
 		}
        
@@ -244,7 +240,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	public void OnTriggerExit2D(Collider2D col)
 	{
-		if (col.CompareTag ("Ground")) {
+		if (col.CompareTag ("Ground")) 
+		{
 			groundTouched = true;
 		}
 	}
@@ -285,7 +282,15 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     {
         RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
+		playerState = PlayerState.Die;
+		ScoreMgr.Instance.UpdateGameOverScore ();
+		MapMgr.Instance.resetDifficult ();
+		GameMgr.Instance.GameOver();
 
+			backGround [0].GetComponent<CamShake> ().MinorShake (100);
+		backGround [1].GetComponent<CamShake> ().MinorShake (40);
+		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+//		camera.GetComponent<CameraControl> ().followOnDeath ();
     }
 
 //void FixedUpdate()	
