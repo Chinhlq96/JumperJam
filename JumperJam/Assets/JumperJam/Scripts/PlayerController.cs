@@ -37,8 +37,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
     /// 2 idle
     /// 3 jump
     /// </summary>
-    [SerializeField]
-    Sprite[] aniSprites;
+    
+    public Sprite[] aniSprites;
 
 
 	public Transform pos;
@@ -196,10 +196,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				notTouchOne = false;
 			}
         }
-        if (col.CompareTag("Enemy"))
+		if (col.CompareTag("Enemy")||col.CompareTag("Bullet"))
         {
 
-			if (transform.position.y > col.transform.position.y + 1f) {
+			if ((transform.position.y > col.transform.position.y + 1f)&&!col.CompareTag("Bullet")) {
 				RG.velocity = new Vector2(0, 0);
 				RG.AddForce(force * 1f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
@@ -267,7 +267,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     public void Jump()
     {
-		Debug.Log (RG.velocity.y);
+	//	Debug.Log (RG.velocity.y);
         if (RG.velocity.y <= 0)
         {
             if (playerState == PlayerState.Die) return;
