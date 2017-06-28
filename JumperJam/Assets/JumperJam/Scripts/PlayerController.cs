@@ -31,6 +31,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	[SerializeField]
 	Transform playerTrans;
 
+	[SerializeField]
+	private Transform[] backGround;	
 
 	/// <summary>
 	/// 1 die 
@@ -287,7 +289,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	void Die()
 	{
-		transform.GetChild(0).GetComponent<Collider2D> ().enabled = false;
+		//transform.GetChild(0).GetComponent<Collider2D> ().enabled = false;
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 
