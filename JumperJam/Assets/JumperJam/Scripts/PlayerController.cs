@@ -291,23 +291,32 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 
-	}
+		playerState = PlayerState.Die;
+		ScoreMgr.Instance.UpdateGameOverScore ();
+		MapMgr.Instance.resetDifficult ();
+		GameMgr.Instance.GameOver();
+		backGround [0].GetComponent<CamShake> ().MinorShake (100);
+		backGround [1].GetComponent<CamShake> ().MinorShake (40);
+		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+//		camera.GetComponent<CameraControl> ().followOnDeath ();
+    }
 
-	//void FixedUpdate()	
-	//
-	//    {
-	//		Debug.Log ("run");
-	//		if (canMoveNow == true && GameMgr.Instance.gameState != GameState.Pause) {
-	//			float moveHorizontal = Input.GetAxis ("Horizontal");
-	//			Vector3 movement = new Vector3 (moveHorizontal, 0, 0);
-	//			transform.position += movement * 20f * Time.deltaTime;
-	//
-	//
-	//			if (RG.velocity.y < 0 && playerState != PlayerState.Die) {
-	//				playerState = PlayerState.Idle;
-	//			}
-	//		}
-	//    }
+//void FixedUpdate()	
+//
+//    {
+//		Debug.Log ("run");
+//		if (canMoveNow == true && GameMgr.Instance.gameState != GameState.Pause) {
+//			float moveHorizontal = Input.GetAxis ("Horizontal");
+//			Vector3 movement = new Vector3 (moveHorizontal, 0, 0);
+//			transform.position += movement * 20f * Time.deltaTime;
+//
+//
+//			if (RG.velocity.y < 0 && playerState != PlayerState.Die) {
+//				playerState = PlayerState.Idle;
+//			}
+//		}
+//    }
+
 
 }
 
