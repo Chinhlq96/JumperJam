@@ -81,11 +81,16 @@ public class EnemyPatrol : MonoBehaviour
 		// Dung lai va ban
 		speed = 0;
 		yield return new WaitForSeconds (.5f);
-		if (firePos != null) {
+		if (firePos != null) 
+		{
 			var fireball = ContentMgr.Instance.GetItem<FireballController> ("EnemyFireBall", firePos.position);
 			fireball.GetComponent<Rigidbody2D> ().gravityScale = 0f;
-			speed = moveSpeed;
+			fireball.Shoot (shootSpeed * transform.localScale.x);
+			yield return new WaitForSeconds (.5f);
+			if (fireball != null)
+				fireball.Destroy ();
 		}
+		speed = moveSpeed;
 	}
 
 	void Fire()
