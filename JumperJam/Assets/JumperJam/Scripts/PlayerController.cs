@@ -77,7 +77,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void OnEnable()
     {
-		gameObject.transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
+		transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
 		startPos = transform.position;
 		maxPos = startPos;
 		DOTween.Init();
@@ -177,30 +177,33 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     public void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.CompareTag("Platform"))
+		if (col.CompareTag("Platform")||col.CompareTag("SPlatform"))
         {
-			Jump ();
+			if (col.CompareTag ("SPlatform")) {
+				Jump (new Vector2 (0, 80f));
+	
+ 			} else
+				Jump (force);
 
 			//make platform bounce
 
 
 
-			if (notTouchOne == true) 
-			{
-				Jump ();
-				transform.eulerAngles = new Vector3 (0,0,0);
-				if (moveX > 0 || Input.acceleration.x > 0) {
-					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
-				} else if (moveX <= 0 || Input.acceleration.x < 0){
-					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
-				}
-				notTouchOne = false;
-			}
+//			if (notTouchOne == true) 
+//			{
+//				Jump (force);
+//				transform.eulerAngles = new Vector3 (0,0,0);
+//				if (moveX > 0.5f || Input.acceleration.x > 0.5f) {
+//					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
+//				} else if (moveX < 0.5f || Input.acceleration.x < 0.5f){
+//					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
+//				}
+//				notTouchOne = false;
+//			}
         }
 		if (col.CompareTag("Enemy")||col.CompareTag("Bullet"))
         {
-
-			if ((transform.position.y > col.transform.position.y + 1f)&&!col.CompareTag("Bullet")) {
+			if ((transform.position.y > col.transform.position.y + 0.7f)&&!col.CompareTag("Bullet")) {
 				RG.velocity = new Vector2(0, 0);
 				RG.AddForce(force * 1f, ForceMode2D.Impulse);
 				col.gameObject.SetActive (false);
@@ -269,7 +272,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
         }
     }
 
-    public void Jump()
+    public void Jump(Vector2 force)
     {
 	//	Debug.Log (RG.velocity.y);
         if (RG.velocity.y <= 0)
@@ -284,7 +287,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void Die()
     {
-		gameObject.transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
+		transform.GetChild(0).GetComponent<Collider2D> ().enabled = false;
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 
