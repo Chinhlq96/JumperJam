@@ -77,6 +77,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void OnEnable()
     {
+		gameObject.transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
 		startPos = transform.position;
 		maxPos = startPos;
 		DOTween.Init();
@@ -283,7 +284,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     void Die()
     {
-        RG.velocity = new Vector2(0, -5);
+		gameObject.transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
+		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 
     }
