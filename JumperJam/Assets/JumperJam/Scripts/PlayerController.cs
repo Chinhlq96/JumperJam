@@ -137,7 +137,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		if (scrPos.x > Screen.width + 10)
 			TeleportToLeft (scrPos);
 		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
-		if ((Mathf.RoundToInt (Mathf.Abs (transform.position.y - startPos.y)) % 5 == 0)&&(transform.position.y > maxPos.y))
+		if ((Mathf.RoundToInt (Mathf.Abs (transform.position.y - startPos.y)) % 5 == 0) && (transform.position.y > maxPos.y))
 			ScoreMgr.Instance.AddScore (5);
 		if (transform.position.y > maxPos.y) {
 			maxPos = transform.position;
@@ -207,6 +207,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			} else {
 				playerState = PlayerState.Die;
 				Die ();
+				ScoreMgr.Instance.UpdateGameOverScore ();
 				MapMgr.Instance.resetDifficult ();
 				GameMgr.Instance.GameOver();
 			}
@@ -217,7 +218,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		{
 			playerState = PlayerState.Die;
 			Die();
-		
+			ScoreMgr.Instance.UpdateGameOverScore ();
 			//reset difficult
 			MapMgr.Instance.resetDifficult ();
 			GameMgr.Instance.GameOver();
@@ -228,6 +229,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (groundTouched) {
 				playerState = PlayerState.Die;
 				Die ();
+				ScoreMgr.Instance.UpdateGameOverScore ();
+
 				groundDeath = true;
 
 
@@ -285,19 +288,21 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
     }
 
-void FixedUpdate()
-    {
-		if (canMoveNow == true && GameMgr.Instance.gameState != GameState.Pause) {
-			float moveHorizontal = Input.GetAxis ("Horizontal");
-			Vector3 movement = new Vector3 (moveHorizontal, 0, 0);
-			transform.position += movement * 20f * Time.deltaTime;
-
-
-			if (RG.velocity.y < 0 && playerState != PlayerState.Die) {
-				playerState = PlayerState.Idle;
-			}
-		}
-    }
+//void FixedUpdate()	
+//
+//    {
+//		Debug.Log ("run");
+//		if (canMoveNow == true && GameMgr.Instance.gameState != GameState.Pause) {
+//			float moveHorizontal = Input.GetAxis ("Horizontal");
+//			Vector3 movement = new Vector3 (moveHorizontal, 0, 0);
+//			transform.position += movement * 20f * Time.deltaTime;
+//
+//
+//			if (RG.velocity.y < 0 && playerState != PlayerState.Die) {
+//				playerState = PlayerState.Idle;
+//			}
+//		}
+//    }
 
 }
 

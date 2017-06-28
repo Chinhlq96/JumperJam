@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 
 	private int score;
-
 	private int bestScore;
 
 	[SerializeField]
@@ -25,27 +24,22 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	void Start () {
 		score = 0;
 
+		int coins = PlayerPrefs.GetInt ("TotalCoin");
+		coinsTextChar.text = "x" + coins;
+		coinsText.text = "x" + coins;
 		bestScore = PlayerPrefs.GetInt ("BestScore");
+		bestScoreText.text = "" + bestScore;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		scoreText.text = "" + score;
+
+	public void UpdateGameOverScore() {
 		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) {
 			PlayerPrefs.SetInt ("BestScore", score);
-			Debug.Log (PlayerPrefs.GetInt ("BestScore"));
 			bestScoreImage.gameObject.SetActive (true);
 		} else {
 			bestScoreImage.gameObject.SetActive (false);
 		}
 		gameoverScoreText.text = "" + score;
-		int best = PlayerPrefs.GetInt ("BestScore");
-		bestScoreText.text = "" + best;
-		int coins = PlayerPrefs.GetInt ("TotalCoin");
-		coinsText.text = "x" + coins;
-		coinsTextChar.text = "x" + coins;
 	}
-
 	public int getScore()
 	{
 		return score;
@@ -53,17 +47,20 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 
 	public void AddScore (int _score) {
 		score += _score;
+		scoreText.text = "" + score;
 	}
 
-	public void AddCoin (int point)
+	public void AddCoin (int _coin)
 	{
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
-		PlayerPrefs.SetInt ("TotalCoin", point + coin);
+		PlayerPrefs.SetInt ("TotalCoin", _coin + coin);
+		coinsText.text = "x" + (_coin + coin);
 	}
 
-	public void SubCoin (int point)
+	public void SubCoin (int _coin)
 	{
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
-		PlayerPrefs.SetInt ("TotalCoin", -point + coin);
+		PlayerPrefs.SetInt ("TotalCoin", coin - _coin);
+		coinsTextChar.text = "x" + (coin - _coin);
 	}
 }
