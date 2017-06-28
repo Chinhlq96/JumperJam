@@ -286,8 +286,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		ScoreMgr.Instance.UpdateGameOverScore ();
 		MapMgr.Instance.resetDifficult ();
 		GameMgr.Instance.GameOver();
-
-			backGround [0].GetComponent<CamShake> ().MinorShake (100);
+		backGround [0].GetComponent<CamShake> ().MinorShake (100);
 		backGround [1].GetComponent<CamShake> ().MinorShake (40);
 		backGround [2].GetComponent<CamShake> ().MinorShake (40);
 //		camera.GetComponent<CameraControl> ().followOnDeath ();
