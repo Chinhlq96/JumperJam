@@ -22,7 +22,7 @@ public class Despawn : MonoBehaviour {
 				
 			}
 
-		if (other.CompareTag("Enemy") )
+		if (other.CompareTag("Enemy") || other.CompareTag("UndeadEnemy"))
 			{
 				//Neu enemy o trong mot object khac ( object Enemy chua enemy va patrol point )
 			try

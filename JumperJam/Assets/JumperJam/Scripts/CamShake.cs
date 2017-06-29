@@ -4,7 +4,7 @@ using System.Collections;
 public class CamShake : MonoBehaviour
 {
 
-	private bool isShaking = true;
+	private bool isShaking = false;
 	private float baseX,baseY;
 	private float intensity = 8f;
 	private int shakes = 30;

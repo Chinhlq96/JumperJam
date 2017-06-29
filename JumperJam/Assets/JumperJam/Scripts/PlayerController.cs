@@ -79,7 +79,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	void OnEnable()
 	{
-		transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
+		//transform.GetChild(0).GetComponent<Collider2D> ().enabled = true;
 		startPos = transform.position;
 		maxPos = startPos;
 		DOTween.Init();
@@ -177,10 +177,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		transform.position = pos;
 	}
 
+	private int count = 0;
 	public void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.CompareTag("Platform")||col.CompareTag("SPlatform"))
-		{
+		if (col.CompareTag ("Platform") || col.CompareTag ("SPlatform")) {
 			if (col.CompareTag ("SPlatform")) {
 				Jump (new Vector2 (0, 80f));
 
@@ -203,46 +203,45 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			//				notTouchOne = false;
 			//			}
 		}
-		if (col.CompareTag("Enemy")||col.CompareTag("Bullet"))
-		{
-			if ((transform.position.y > col.transform.position.y + 0.7f)&&!col.CompareTag("Bullet")) {
-				RG.velocity = new Vector2(0, 0);
-				RG.AddForce(force * 1f, ForceMode2D.Impulse);
-				col.gameObject.SetActive (false);
-				ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
-			} else {
-				playerState = PlayerState.Die;
-				Die ();
-				ScoreMgr.Instance.UpdateGameOverScore ();
-				MapMgr.Instance.resetDifficult ();
-				GameMgr.Instance.GameOver();
+		if (playerState != PlayerState.Die) { 
+			if (col.CompareTag ("Enemy") || col.CompareTag ("Bullet")) {
+				if ((transform.position.y > col.transform.position.y + 0.7f) && !col.CompareTag ("Bullet")) {
+					RG.velocity = new Vector2 (0, 0);
+					RG.AddForce (force * 1f, ForceMode2D.Impulse);
+					col.gameObject.SetActive (false);
+					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
+				} else {
+					playerState = PlayerState.Die;
+					count++;
+					Die ();
+					Shake ();
+				}
+
 			}
-
-		}
-
-		if (col.CompareTag ("DeathArea")) 
-		{
-			playerState = PlayerState.Die;
-			Die();
-			ScoreMgr.Instance.UpdateGameOverScore ();
-			//reset difficult
-			MapMgr.Instance.resetDifficult ();
-			GameMgr.Instance.GameOver();
-		}
-
-		if (col.CompareTag ("Ground")) 
-		{
-			if (groundTouched) {
+			if (col.CompareTag ("UndeadEnemy")) {
 				playerState = PlayerState.Die;
+				count++;
 				Die ();
-				ScoreMgr.Instance.UpdateGameOverScore ();
+				Shake ();
+			}
+			if (col.CompareTag ("Ground")) {
+				if (groundTouched) {
+					playerState = PlayerState.Die;
+					Die ();
+					count++;
+					Shake ();
+					groundDeath = true;
+				}
+			}
+		}
 
-				groundDeath = true;
-
-
-				//reset difficult
-				MapMgr.Instance.resetDifficult ();
-				GameMgr.Instance.GameOver ();
+		if (col.CompareTag ("DeathArea")) {
+			playerState = PlayerState.Die;
+			Die ();
+			count++;
+			if (count == 2) {
+				Shake ();
+				count = 0;
 			}
 		}
 
@@ -297,12 +296,15 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		ScoreMgr.Instance.UpdateGameOverScore ();
 		MapMgr.Instance.resetDifficult ();
 		GameMgr.Instance.GameOver();
-		backGround [0].GetComponent<CamShake> ().MinorShake (100);
-		backGround [1].GetComponent<CamShake> ().MinorShake (40);
-		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+
 //		camera.GetComponent<CameraControl> ().followOnDeath ();
     }
 
+	void Shake() {
+		backGround [0].GetComponent<CamShake> ().MinorShake (100);
+		backGround [1].GetComponent<CamShake> ().MinorShake (40);
+		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+	}
 //void FixedUpdate()	
 //
 //    {
