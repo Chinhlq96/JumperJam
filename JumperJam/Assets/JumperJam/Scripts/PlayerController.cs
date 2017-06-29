@@ -214,6 +214,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					playerState = PlayerState.Die;
 					count++;
 					Die ();
+					if (count == 1)
 					Shake ();
 				}
 
@@ -222,14 +223,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				playerState = PlayerState.Die;
 				count++;
 				Die ();
-				Shake ();
+				if (count == 1)
+					Shake ();
 			}
 			if (col.CompareTag ("Ground")) {
 				if (groundTouched) {
 					playerState = PlayerState.Die;
 					Die ();
 					count++;
-					Shake ();
+					if (count == 1)
+						Shake ();
 					groundDeath = true;
 				}
 			}

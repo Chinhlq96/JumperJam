@@ -45,6 +45,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     /// </summary>
     public void NewGame()
     {   
+		System.GC.Collect ();
 		PlayerController.Instance.playerState = PlayerState.Jump;
 		PlayerController.Instance.UpdateState ();
         gameState = GameState.Wait;
