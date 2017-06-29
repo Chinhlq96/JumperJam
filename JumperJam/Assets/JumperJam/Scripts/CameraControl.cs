@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class CameraControl : MonoBehaviour 
 {
 	[SerializeField]
@@ -20,6 +20,8 @@ public class CameraControl : MonoBehaviour
 	bool followed;
 	//Check xem da lay distance chua
 	bool checkedDistant;
+
+	bool tweened;
 
 	public void resetDistant()
 	{
@@ -54,6 +56,7 @@ public class CameraControl : MonoBehaviour
 			checkedDistant = true;
 
 			//Follow player trong thoi gian followTime
+
 			StartCoroutine ("deathCam");
 
 
@@ -93,8 +96,16 @@ public class CameraControl : MonoBehaviour
 
 
 	IEnumerator deathCam()
-	{
+	{	
+		
 		//this.transform.position = new Vector3 (transform.position.x, player.transform.position.y - distanceFromPlayer, transform.position.z);
+		if (!tweened)
+		{
+			this.transform.DOMove (new Vector3 (transform.position.x, player.transform.position.y, transform.position.z), 0.2f);
+			yield return new WaitForSeconds (0.2f);
+			tweened = true;
+		}
+
 		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y, transform.position.z);
 
 		yield return new WaitForSeconds(followTime);

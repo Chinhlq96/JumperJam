@@ -49,11 +49,11 @@ public class EnemySpawn : MonoBehaviour {
 			if (gameObject.name == "SpawnEnemyPoint") 
 			{
 				if (gameObject.transform.parent.CompareTag ("PlatformEasy"))
-				randomValue = Random.Range (1, 15);
+				randomValue = Random.Range (1, 20);
 				else if (gameObject.transform.parent.CompareTag ("PlatformNormal"))
-				randomValue = Random.Range (1, 13);
+				randomValue = Random.Range (1, 15);
 				else 
-				randomValue = Random.Range (1, 10);
+				randomValue = Random.Range (1, 13);
 				
 
 				switch (randomValue)
