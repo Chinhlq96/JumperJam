@@ -23,18 +23,18 @@ using EventManager;
 	void OnEnable()
 	{
 		this.RegisterListener(EventID.GenMap, (sender, param) => GenMap());
-		this.RegisterListener(EventID.ResetDiff, (sender, param) => resetDifficult());
+		this.RegisterListener(EventID.ResetDiff, (sender, param) => ResetDifficult());
 
 	}
 
 	void OnDisable()
 	{
 				this.RemoveListener(EventID.GenMap, (sender, param) => GenMap());
-		this.RemoveListener(EventID.ResetDiff, (sender, param) => resetDifficult());
+		this.RemoveListener(EventID.ResetDiff, (sender, param) => ResetDifficult());
 	}
 
 
-	public void  resetDifficult()
+	public void  ResetDifficult()
 	{
 		difficultCount = 0;
 	}

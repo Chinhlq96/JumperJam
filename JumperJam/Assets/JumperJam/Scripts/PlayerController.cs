@@ -99,29 +99,29 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, playerState == PlayerState.Die ? -30 : 0));
 	}
 
-	public void resetPosition()
+	public void ResetPosition()
 	{
 		this.transform.position = spawnPlayerPoint.position;
 	}
 
-	public void resetVelocity()
+	public void ResetVelocity()
 	{
 		RG.velocity = new Vector2(0,0);
 	}
 
-	public void setGravity(int value)
+	public void SetGravity(int value)
 	{
 		RG.gravityScale = value;
 	}
 
-	public void resetOnReplay()
+	public void ResetOnReplay()
 	{
 		//playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
 		this.transform.rotation = Quaternion.Euler(new Vector3 (0, 0, 0));
 
-		resetVelocity ();
-		setGravity (0);
-		resetPosition ();
+		ResetVelocity ();
+		SetGravity (0);
+		ResetPosition ();
 		//Invoke("resetPosition",5f);
 		playerState = PlayerState.Jump;
 
@@ -323,7 +323,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 		playerState = PlayerState.Die;
 		ScoreMgr.Instance.UpdateGameOverScore ();
-		MapMgr.Instance.resetDifficult ();
+		MapMgr.Instance.ResetDifficult ();
 		GameMgr.Instance.GameOver();
 
 //		camera.GetComponent<CameraControl> ().followOnDeath ();

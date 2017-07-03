@@ -25,17 +25,20 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 
 	bool imageHiden;
 
-	public GameObject thisFuckingThingHoldTheGroundImageToHideOrActive;
-	public GameObject AndThisFuckingThingHoldTheGroundColliderToHideOrActive;
+	[SerializeField]
+	 GameObject groundImage;
+	[SerializeField]
+	 GameObject groundCollider;
 
 	public void resetDistant()
 	{
 		distanceFromPlayer = 0f;
 	}
 
-	public void resetCamera()
+	public void ResetCamera()
 	{
 		transform.position = BeginCameraPoint.position;
+		tweened = false;
 	}
 	void Update()
 	{
@@ -79,7 +82,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	{
 		if (col.CompareTag ("GroundImg")) {
 			
-			thisFuckingThingHoldTheGroundImageToHideOrActive = col.gameObject;
+			groundImage = col.gameObject;
 			col.gameObject.SetActive (false);
 			imageHiden = true;
 //			Destroy (col.gameObject);
@@ -87,18 +90,18 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		}
 		if (col.CompareTag ("Ground")) {
 			
-			AndThisFuckingThingHoldTheGroundColliderToHideOrActive = col.gameObject;
+			groundCollider = col.gameObject;
 			col.gameObject.SetActive(false);
 			imageHiden = true;
 		}
 	}
 
-	public void setActiveGroundToTrue()
+	public void SetActiveGroundToTrue()
 	{
 		if (imageHiden) {
 
-		thisFuckingThingHoldTheGroundImageToHideOrActive.SetActive(true);
-		AndThisFuckingThingHoldTheGroundColliderToHideOrActive.SetActive (true);
+		groundImage.SetActive(true);
+		groundCollider.SetActive (true);
 
 			imageHiden = false;
 		}

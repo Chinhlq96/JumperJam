@@ -35,5 +35,9 @@ public class Despawn : MonoBehaviour {
 				}
 				
 			}
+		if(other.CompareTag("Coin") )
+			{
+				ContentMgr.Instance.Despaw (other.gameObject);
+			}
 	}
 }

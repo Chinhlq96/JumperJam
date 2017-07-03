@@ -100,10 +100,10 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 
 		//reset Camera position
-		CameraControl.Instance.resetCamera ();
+		CameraControl.Instance.ResetCamera ();
 
 		//reset player position/rotation/velocity/state
-		PlayerController.Instance.resetOnReplay ();
+		PlayerController.Instance.ResetOnReplay ();
 
 		//Enter GamePage
 		UIManager.Instance.ShowPage ("GamePage");
@@ -121,7 +121,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		PlayerController.Instance.groundDeath = false;
 
 		//ground deactived when out of camera sight -> we have to active it again
-		CameraControl.Instance.setActiveGroundToTrue ();
+		CameraControl.Instance.SetActiveGroundToTrue ();
 
 		// random new map type
 		randomValue = Random.Range (1, 6);
@@ -155,6 +155,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void Exit()
 	{
+		LoadGameScene ();
 		UIManager.Instance.ShowPage ("StartPage");
 	}
 
@@ -171,7 +172,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     public void GameOver()
     {
 		
-		StartCoroutine ("gameOver");
+		StartCoroutine ("GameOverDelay");
     }
 		
 
@@ -190,9 +191,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
             gameState = GameState.Playing;
             ShowTapUI();
 		
-			PlayerController.Instance.resetVelocity ();
+			PlayerController.Instance.ResetVelocity ();
 			PlayerController.Instance.Jump (new Vector2 (0, 50f));
-			PlayerController.Instance.setGravity (3);
+			PlayerController.Instance.SetGravity (3);
 
 			PlayerController.Instance.canMoveNow = true;
         }
@@ -216,7 +217,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		}
 	}
 
-	IEnumerator gameOver()
+	IEnumerator GameOverDelay()
 	{
 		yield return new WaitForSeconds (0.7f);
 		UIManager.Instance.ShowPage("GameOverPage");
