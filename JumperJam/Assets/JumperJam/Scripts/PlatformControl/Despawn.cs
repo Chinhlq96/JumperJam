@@ -15,7 +15,7 @@ public class Despawn : MonoBehaviour {
 
 	public void OnTriggerEnter2D(Collider2D other)
 	{ 
-		if (other.CompareTag("PlatformG") )
+		if (other.CompareTag("PlatformG"))
 			{
 				//Despawn Platform	
 				ContentMgr.Instance.Despaw (other.gameObject.transform.parent.gameObject);

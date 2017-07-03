@@ -33,7 +33,7 @@ public class EnemyPatrol : MonoBehaviour
 	[SerializeField]
 	private float height;
 	//private Rigidbody2D enemyRg;
-	void Start () 
+	void OnEnable () 
 	{
 		shootDelayCounter = delayShoot;
 		speed = moveSpeed;
@@ -54,6 +54,7 @@ public class EnemyPatrol : MonoBehaviour
 				// Neu het path roi thi quay lai
 				if (targetSelect == path.Length) {
 					targetSelect = 0;
+					Debug.Log ("Turn");
 				}
 				target = path [targetSelect];
 				// Quay lai
@@ -114,4 +115,5 @@ public class EnemyPatrol : MonoBehaviour
 
 		}
 	}
+
 }

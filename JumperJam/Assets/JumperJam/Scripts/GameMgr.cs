@@ -75,14 +75,15 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		//Despawn Mob
 		foreach (GameObject element in spawnList) 
 		{
-			try
-			{
-				ContentMgr.Instance.Despaw (element.transform.parent.gameObject);
-			}
-			catch
-			{
-				ContentMgr.Instance.Despaw (element);
-			}
+			if (element.gameObject.activeSelf)
+				try
+				{
+					ContentMgr.Instance.Despaw (element.transform.parent.gameObject);
+				}
+				catch
+				{
+					ContentMgr.Instance.Despaw (element);
+				}
 		
 		}
 		//Clear Mob List
@@ -92,7 +93,8 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		//Despawn platform
 		foreach (var item in platformList)
 		{
-			ContentMgr.Instance.Despaw (item);
+			if (item.gameObject.activeSelf)
+				ContentMgr.Instance.Despaw (item);
 
 		}
 		//Clear platform list
