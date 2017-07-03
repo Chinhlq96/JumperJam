@@ -14,21 +14,24 @@ using EventManager;
 	[SerializeField]
 	GameObject despawnHold;
 
+	//add to list then despawn on replay
+	GameObject spawnPlatformHold;
+
 	private int difficultCount = 0;
 
 
-//	void OnEnable()
-//	{
-//		this.RegisterListener(EventID.GenMap, (sender, param) => GenMap());
-//		this.RegisterListener(EventID.ResetDiff, (sender, param) => resetDifficult());
-//
-//	}
-//
-//	void OnDisable()
-//	{
-//				this.RemoveListener(EventID.GenMap, (sender, param) => GenMap());
-//		this.RemoveListener(EventID.ResetDiff, (sender, param) => resetDifficult());
-//	}
+	void OnEnable()
+	{
+		this.RegisterListener(EventID.GenMap, (sender, param) => GenMap());
+		this.RegisterListener(EventID.ResetDiff, (sender, param) => resetDifficult());
+
+	}
+
+	void OnDisable()
+	{
+				this.RemoveListener(EventID.GenMap, (sender, param) => GenMap());
+		this.RemoveListener(EventID.ResetDiff, (sender, param) => resetDifficult());
+	}
 
 
 	public void  resetDifficult()
@@ -39,25 +42,29 @@ using EventManager;
 	public void GenMap()
 	{	int randomValue = 0;
 		if (difficultCount < 3) {
-			randomValue = Random.Range (1, 3);
-			ContentMgr.Instance.GetItem ("Easy" + randomValue, spawnPoint.gameObject.transform.position);
+			randomValue = Random.Range (1, 4);
+			spawnPlatformHold = ContentMgr.Instance.GetItem ("Easy" + randomValue, spawnPoint.gameObject.transform.position);
 			difficultCount++;
 		} else if (difficultCount < 6) {
-			randomValue = Random.Range (1, 3);
-			ContentMgr.Instance.GetItem ("Normal" + randomValue, spawnPoint.gameObject.transform.position);
+			randomValue = Random.Range (1, 4);
+			spawnPlatformHold = ContentMgr.Instance.GetItem ("Normal" + randomValue, spawnPoint.gameObject.transform.position);
 			difficultCount++;
 		} else {
-			randomValue = Random.Range (1, 3);
-			ContentMgr.Instance.GetItem ("Hard" + randomValue, spawnPoint.gameObject.transform.position);
+			randomValue = Random.Range (1, 4);
+			spawnPlatformHold = ContentMgr.Instance.GetItem ("Hard" + randomValue, spawnPoint.gameObject.transform.position);
 
 		}
+
+		GameMgr.Instance.platformList.Add (spawnPlatformHold);
 	}
 
 	public void GenStart()
 	{
+		
 		int randomValue = 0;
-		randomValue = Random.Range (1, 2);
-		ContentMgr.Instance.GetItem ("Start" + randomValue, spawnStartPoint.gameObject.transform.position);
+		randomValue = Random.Range (1, 4);
+		spawnPlatformHold = ContentMgr.Instance.GetItem ("Start" + randomValue, spawnStartPoint.gameObject.transform.position);
+		GameMgr.Instance.platformList.Add (spawnPlatformHold);
 	}
 
 

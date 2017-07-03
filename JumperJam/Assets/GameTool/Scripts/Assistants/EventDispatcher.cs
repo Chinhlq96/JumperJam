@@ -193,6 +193,7 @@ namespace EventManager
 public enum EventID
 {
 	GenMap,
+	InvokeChangeBackground,
 	ResetDiff,
     TapToScreen,
     PostScore,

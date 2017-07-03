@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-public class CameraControl : MonoBehaviour 
+public class CameraControl : SingletonMonoBehaviour <CameraControl>
 {
 	[SerializeField]
 	GameObject player;
@@ -11,17 +11,22 @@ public class CameraControl : MonoBehaviour
 	Transform BeginCameraPoint;
 
 	//Thoi gian camera follow khi chet
-	public float followTime = 0.3f;
+	public float followTime = 0f;
 
 	//khoang cach giua vi tri cua camera va player
 	private float distanceFromPlayer;
 
 	//Check xem da follow chua
-	bool followed;
-	//Check xem da lay distance chua
+	public bool followed;
+	//Check xem da lay distance chua<
 	bool checkedDistant;
 
 	bool tweened;
+
+	bool imageHiden;
+
+	public GameObject thisFuckingThingHoldTheGroundImageToHideOrActive;
+	public GameObject AndThisFuckingThingHoldTheGroundColliderToHideOrActive;
 
 	public void resetDistant()
 	{
@@ -47,6 +52,7 @@ public class CameraControl : MonoBehaviour
 
 		//Camera follow khi player chet
 		if (PlayerController.Instance.playerState == 0 &&!followed &&! player.GetComponent<PlayerController>().groundDeath ) 
+
 		{
 			//Lay khoang cach giua player va camera
 			if (!checkedDistant) 
@@ -64,13 +70,37 @@ public class CameraControl : MonoBehaviour
 
 		}
 
+
 	}
 
+
+	//7/2
 	public void OnTriggerEnter2D(Collider2D col)
 	{
+		if (col.CompareTag ("GroundImg")) {
+			
+			thisFuckingThingHoldTheGroundImageToHideOrActive = col.gameObject;
+			col.gameObject.SetActive (false);
+			imageHiden = true;
+//			Destroy (col.gameObject);
+//			DestroyObject (col.gameObject);
+		}
 		if (col.CompareTag ("Ground")) {
-			Destroy (col.gameObject);
-			DestroyObject (col.gameObject);
+			
+			AndThisFuckingThingHoldTheGroundColliderToHideOrActive = col.gameObject;
+			col.gameObject.SetActive(false);
+			imageHiden = true;
+		}
+	}
+
+	public void setActiveGroundToTrue()
+	{
+		if (imageHiden) {
+
+		thisFuckingThingHoldTheGroundImageToHideOrActive.SetActive(true);
+		AndThisFuckingThingHoldTheGroundColliderToHideOrActive.SetActive (true);
+
+			imageHiden = false;
 		}
 	}
 

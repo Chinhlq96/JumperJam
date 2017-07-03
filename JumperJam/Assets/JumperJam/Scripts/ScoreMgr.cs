@@ -45,6 +45,13 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 		return score;
 	}
 
+	public void resetScore()
+	{	
+		score = 0;
+		scoreText.text = "" + 0;
+	
+	}
+
 	public void AddScore (int _score) {
 		score += _score;
 		scoreText.text = "" + score;
@@ -54,13 +61,21 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	{
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
 		PlayerPrefs.SetInt ("TotalCoin", _coin + coin);
-		coinsText.text = "x" + (_coin + coin);
+		//coinsText.text = "x" + (_coin + coin);
+		printCoin();
 	}
 
 	public void SubCoin (int _coin)
 	{
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
 		PlayerPrefs.SetInt ("TotalCoin", coin - _coin);
-		coinsTextChar.text = "x" + (coin - _coin);
+	//	coinsTextChar.text = "x" + (coin - _coin);
+		printCoin();
+	}
+
+	void printCoin()
+	{
+		coinsText.text = "x" + PlayerPrefs.GetInt ("TotalCoin");
+		coinsTextChar.text = "x" + PlayerPrefs.GetInt ("TotalCoin");
 	}
 }

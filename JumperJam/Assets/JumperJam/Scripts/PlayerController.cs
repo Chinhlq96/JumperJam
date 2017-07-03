@@ -50,8 +50,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	private float moveX;
 	private bool notTouchOne;
 	//
-
-	private PlayerState _playerState;
+	[SerializeField]
+	private int count = 0;
+	public PlayerState _playerState;
 
 	//player can move horizontal or not
 	public bool canMoveNow;
@@ -74,7 +75,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 
-	private Vector3 startPos;
+	public Vector3 startPos;
 	public Vector3 maxPos;
 
 	void OnEnable()
@@ -100,17 +101,30 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	public void resetPosition()
 	{
-		playerTrans.position = spawnPlayerPoint.position;
+		this.transform.position = spawnPlayerPoint.position;
 	}
 
 	public void resetVelocity()
 	{
-		RG.velocity = Vector3.zero;
+		RG.velocity = new Vector2(0,0);
 	}
 
 	public void setGravity(int value)
 	{
 		RG.gravityScale = value;
+	}
+
+	public void resetOnReplay()
+	{
+		//playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+		this.transform.rotation = Quaternion.Euler(new Vector3 (0, 0, 0));
+
+		resetVelocity ();
+		setGravity (0);
+		resetPosition ();
+		//Invoke("resetPosition",5f);
+		playerState = PlayerState.Jump;
+
 	}
 
 	void Update () {
@@ -139,6 +153,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			TeleportToRight (scrPos);
 		if (scrPos.x > Screen.width + 10)
 			TeleportToLeft (scrPos);
+
+
 		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
 		if ((Mathf.RoundToInt (Mathf.Abs (transform.position.y - startPos.y)) % 5 == 0) && (transform.position.y > maxPos.y))
 			ScoreMgr.Instance.AddScore (5);
@@ -177,7 +193,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		transform.position = pos;
 	}
 
-	private int count = 0;
+
 	public void OnTriggerEnter2D(Collider2D col)
 	{
 		if (col.CompareTag ("Platform") || col.CompareTag ("SPlatform")) {
@@ -203,6 +219,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			//				notTouchOne = false;
 			//			}
 		}
+
+
 		if (playerState != PlayerState.Die) { 
 			if (col.CompareTag ("Enemy") || col.CompareTag ("Bullet")) {
 				if ((transform.position.y > col.transform.position.y + 0.7f) && !col.CompareTag ("Bullet")) {
@@ -215,6 +233,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					count++;
 					Die ();
 					Shake ();
+					Debug.Log (3);
 				}
 
 			}
@@ -223,6 +242,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				count++;
 				Die ();
 				Shake ();
+				Debug.Log (2);
 			}
 			if (col.CompareTag ("Ground")) {
 				if (groundTouched) {
@@ -230,17 +250,24 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					Die ();
 					count++;
 					Shake ();
+					Debug.Log (1);
 					groundDeath = true;
+					//Khi chet ngay o doan dau thi reset luon
+					count = 0;
 				}
 			}
 		}
 
 		if (col.CompareTag ("DeathArea")) {
-			playerState = PlayerState.Die;
-			Die ();
+			if (playerState != PlayerState.Die) 
+			{
+				playerState = PlayerState.Die;
+				Die ();
+			}
 			count++;
 			if (count == 2) {
 				Shake ();
+				Debug.Log (4);
 				count = 0;
 			}
 		}
@@ -265,13 +292,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		yield return new WaitForSeconds (0.1f);
 	}
 
-	public void OnCollisionEnter2D(Collision2D col)
-	{
-		if (col.gameObject.CompareTag("Ground") && playerState == PlayerState.Die)
-		{
-			GameMgr.Instance.GameOver();
-		}
-	}
+//	public void OnCollisionEnter2D(Collision2D col)
+//	{
+//		if (col.gameObject.CompareTag("Ground") && playerState == PlayerState.Die)
+//		{
+//			GameMgr.Instance.GameOver();
+//		}
+//	}
 
 	public void Jump(Vector2 force)
 	{
@@ -289,6 +316,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	void Die()
 	{
 		//transform.GetChild(0).GetComponent<Collider2D> ().enabled = false;
+
+
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 

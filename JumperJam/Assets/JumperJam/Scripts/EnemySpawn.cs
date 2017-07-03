@@ -6,6 +6,10 @@ public class EnemySpawn : MonoBehaviour {
 
 
 
+	List<GameObject> spawnList = new List<GameObject>();
+
+	GameObject spawnHolder;
+
 	void OnEnable() 
 	{	
 		StartCoroutine (WaitAndSpawn (0.5f));
@@ -59,32 +63,32 @@ public class EnemySpawn : MonoBehaviour {
 				switch (randomValue)
 				{
 				case 1:
-					ContentMgr.Instance.GetItem ("Enemy1", transform.position);
+					spawnHolder = ContentMgr.Instance.GetItem ("Enemy1", transform.position);
 					break;
 				case 2:
-					ContentMgr.Instance.GetItem ("Enemy2", transform.position);
+				spawnHolder = ContentMgr.Instance.GetItem ("Enemy2", transform.position);
 					break;
 				case 3:
-					ContentMgr.Instance.GetItem ("Enemy3", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Enemy3", transform.position);
 					break;
 				case 4:
-					ContentMgr.Instance.GetItem ("Enemy4", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Enemy4", transform.position);
 					break;
 				case 5:
-				ContentMgr.Instance.GetItem ("Coin", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Coin", transform.position);
 				break;
 
 			case 6:
-				ContentMgr.Instance.GetItem ("Enemy5", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Enemy5", transform.position);
 				break;
 			case 7:
-				ContentMgr.Instance.GetItem ("Enemy6", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Enemy6", transform.position);
 				break;
 			case 8:
-				ContentMgr.Instance.GetItem ("Enemy7", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Enemy7", transform.position);
 				break;
 			case 9:
-				ContentMgr.Instance.GetItem ("Enemy8", transform.position);
+				spawnHolder =   ContentMgr.Instance.GetItem ("Enemy8", transform.position);
 				break;
 				default:
 					break;
@@ -106,16 +110,16 @@ public class EnemySpawn : MonoBehaviour {
 				switch (randomValue) 
 				{
 				case 1:
-					ContentMgr.Instance.GetItem ("EnemyFly1", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("EnemyFly1", transform.position);
 					break;
 				case 2:
-				ContentMgr.Instance.GetItem ("Coin", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("Coin", transform.position);
 				break;
 				case 3:
-					ContentMgr.Instance.GetItem ("EnemyFly2", transform.position);
+				spawnHolder =	ContentMgr.Instance.GetItem ("EnemyFly2", transform.position);
 					break;
 				case 4:
-				ContentMgr.Instance.GetItem ("EnemyFly3", transform.position);
+				spawnHolder =  ContentMgr.Instance.GetItem ("EnemyFly3", transform.position);
 				break;
 				default:
 					break;
@@ -123,7 +127,11 @@ public class EnemySpawn : MonoBehaviour {
 
 		
 			}
-		
+		if(spawnHolder!=null)
+		GameMgr.Instance.spawnList.Add (spawnHolder);
+
+
+		spawnList.Add (spawnHolder);
 	}
 
 }

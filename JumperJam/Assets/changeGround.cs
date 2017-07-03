@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class changeGround : MonoBehaviour {
+public class changeGround : SingletonMonoBehaviour<changeGround> {
 	public Sprite jungleGroundStyle;
 	public Sprite iceGroundStyle;
 	public Sprite poisonGroundStyle;
@@ -15,7 +15,11 @@ public class changeGround : MonoBehaviour {
 	{
 		//DOTween.Init();
 
+		ChangeGround ();
+	}
 
+	public void ChangeGround()
+	{
 		if(GameMgr.Instance.randomValue==1)
 			GetComponent<SpriteRenderer> ().sprite =jungleGroundStyle ;
 		if(GameMgr.Instance.randomValue==2)
@@ -26,6 +30,5 @@ public class changeGround : MonoBehaviour {
 			GetComponent<SpriteRenderer> ().sprite =poisonGroundStyle ;
 		if(GameMgr.Instance.randomValue==5)
 			GetComponent<SpriteRenderer> ().sprite =treeGroundStyle ;
-		
 	}
 }

@@ -10,6 +10,16 @@ public class ShopManager: SingletonMonoBehaviour<ShopManager> {
 
 	public List<Character> charList= new List<Character>();
 
+
+	public GameObject NotEnoughCoins;
+
+
+	void Start()
+	{
+		
+		PlayerPrefs.SetInt ("bought0", 1);
+	}
+
 	//  9 item  => 0 to 8 
 	// item that is currently selected
 	public int currentCharacterID
