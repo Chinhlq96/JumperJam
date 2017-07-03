@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShopManager: SingletonMonoBehaviour<ShopManager> {
 
 
-	public GameObject player;
 
 
 	public List<Character> charList= new List<Character>();
@@ -16,10 +15,22 @@ public class ShopManager: SingletonMonoBehaviour<ShopManager> {
 
 	void Start()
 	{
-		
+		ChangeCharacter ();
 		PlayerPrefs.SetInt ("bought0", 1);
 	}
+	public void ChangeCharacter() {
+		for (int i = 0; i < charList.Count; i++) 
+		{
+			if (charList [i].characterID == currentCharacterID) 
+			{
+				PlayerController.Instance.aniSprites [0] = charList [i].characterDieSprite;
+				PlayerController.Instance.aniSprites [1] = charList [i].characterIdleSprite;
+				PlayerController.Instance.aniSprites [2] = charList [i].characterJumpSprite;
+				Debug.Log("id:" + currentCharacterID);
 
+			}
+		}
+	}
 	//  9 item  => 0 to 8 
 	// item that is currently selected
 	public int currentCharacterID

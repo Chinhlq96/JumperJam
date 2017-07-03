@@ -54,7 +54,6 @@ public class EnemyPatrol : MonoBehaviour
 				// Neu het path roi thi quay lai
 				if (targetSelect == path.Length) {
 					targetSelect = 0;
-					Debug.Log ("Turn");
 				}
 				target = path [targetSelect];
 				// Quay lai
