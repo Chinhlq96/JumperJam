@@ -21,7 +21,7 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	[SerializeField]
 	Text coinsTextChar;
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 		score = 0;
 
 		int coins = PlayerPrefs.GetInt ("TotalCoin");
@@ -34,6 +34,9 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	public void UpdateGameOverScore() {
 		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) {
 			PlayerPrefs.SetInt ("BestScore", score);
+			bestScore = PlayerPrefs.GetInt ("BestScore");
+			bestScoreText.text = "" + bestScore;
+
 			bestScoreImage.gameObject.SetActive (true);
 		} else {
 			bestScoreImage.gameObject.SetActive (false);
