@@ -157,7 +157,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void Exit()
 	{
-		LoadGameScene ();
 		UIManager.Instance.ShowPage ("StartPage");
 	}
 
