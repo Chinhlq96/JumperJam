@@ -51,12 +51,9 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		}
 
 		//Camera follow khi player chet
-		if (PlayerController.Instance.playerState == 0 &&!followed &&! player.GetComponent<PlayerController>().groundDeath ) 
-
-		{
+		if (PlayerController.Instance.playerState == 0 && !followed && !player.GetComponent<PlayerController> ().groundDeath) {
 			//Lay khoang cach giua player va camera
-			if (!checkedDistant) 
-			{
+			if (!checkedDistant) {
 				distanceFromPlayer = transform.position.y - player.transform.position.y;
 			}
 			checkedDistant = true;
@@ -64,10 +61,6 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 			//Follow player trong thoi gian followTime
 
 			StartCoroutine ("deathCam");
-
-
-
-
 		}
 
 

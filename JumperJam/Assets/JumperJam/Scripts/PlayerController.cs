@@ -226,7 +226,14 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				if ((transform.position.y > col.transform.position.y + 0.7f) && !col.CompareTag ("Bullet")) {
 					RG.velocity = new Vector2 (0, 0);
 					RG.AddForce (force * 1f, ForceMode2D.Impulse);
-					col.gameObject.SetActive (false);
+					try
+					{
+						ContentMgr.Instance.Despaw (col.gameObject.transform.parent.gameObject);
+					}
+					catch
+					{
+						ContentMgr.Instance.Despaw (col.gameObject);
+					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
 				} else {
 					playerState = PlayerState.Die;
