@@ -38,9 +38,9 @@ public class EnemySpawn : MonoBehaviour {
 
 			//Ti le spawn enemy phu thuoc vao do kho cua platform pattern
 				if (gameObject.transform.parent.CompareTag ("PlatformEasy"))
-				randomMobValue = Random.Range (1, 20);
+				randomMobValue = Random.Range (1, 22);
 				else if (gameObject.transform.parent.CompareTag ("PlatformNormal"))
-				randomMobValue = Random.Range (1, 15);
+				randomMobValue = Random.Range (1, 16);
 				else 
 				randomMobValue = Random.Range (1, 13);
 				
@@ -76,7 +76,11 @@ public class EnemySpawn : MonoBehaviour {
 			case 9:
 				spawnHolder =   ContentMgr.Instance.GetItem ("Enemy8", transform.position);
 				break;
-				default:
+			case 10:
+				spawnHolder = ContentMgr.Instance.GetItem ("Boost", transform.position);
+				break;
+
+			default:
 					break;
 				}
 			}

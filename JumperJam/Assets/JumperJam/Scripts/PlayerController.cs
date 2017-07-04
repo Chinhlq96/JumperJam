@@ -44,7 +44,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 	//control when to shake
-	private int count = 0;
+	private int _count = 0;
+	public int count
+	{
+		get { return  _count; }
+		set {  _count = value; }
+	}
+
 
 	//player can move horizontal or not
 	private bool _canMoveNow;
@@ -55,7 +61,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 	//Check ground death at start ( player khong chet khi cham ground luc dau )
-	private bool groundTouched;
+	public bool groundTouched;
 
 
 	private bool _groundDeath;
@@ -110,6 +116,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	public void UpdateState()
 	{
 		int index = (int)playerState;
+
+		//invu ko co sprites dac biet
+		if(index<=2)
 		playerSR.sprite = aniSprites [index];
 		playerTrans.localRotation = Quaternion.Euler (new Vector3 (0, 0, playerState == PlayerState.Die ? -30 : 0));
 	}
@@ -122,6 +131,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	public void ResetVelocity()
 	{
 		RG.velocity = new Vector2 (0, 0);
+
+		//prevent player spinning when restart
+		RG.angularVelocity = 0f;
 	}
 
 	public void SetGravity(int value)
@@ -132,9 +144,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	public void ResetOnReplay()
 	{
-		
-		this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
+		//at start if groundTouched is still true --> player instanly death as groundDeath
+		groundTouched = false;
+
 		ResetVelocity ();
+		this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		SetGravity (0);
 		ResetPosition ();
 		playerState = PlayerState.Jump;
@@ -230,7 +244,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 		// Neu chet thi k xet va cham nua
-		if (playerState != PlayerState.Die) { 
+		// Neu invu ko xet
+		if (playerState != PlayerState.Die )
+		if(playerState!= PlayerState.Invu)
+		{ 
 			if (col.CompareTag ("Enemy") || col.CompareTag ("Bullet")) 
 			{
 				// Neu player tren enemy thi giet va tang diem
@@ -295,6 +312,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	{
 		yield return new WaitForSeconds (.9f);
 		dashTrail.GetComponent<DashTrail>().mbEnabled = false;
+
+		//invu -> jump state
+		if(playerState== PlayerState.Invu)
+		playerState = PlayerState.Jump;
 	}
 
 	IEnumerator DespawAfter(float duration) 
@@ -331,13 +352,27 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (playerState == PlayerState.Die) return;
 			RG.velocity = new Vector2(0, 0);
 			if (force.y > 50)
-				dashTrail.GetComponent<DashTrail> ().mbEnabled = true;
+			DashEnabled ();
 			RG.AddForce(force, ForceMode2D.Impulse);
 			playerState = PlayerState.Jump;
 		}
 		//notTouchOne = true;
 	}
 
+	public void DashEnabled()
+	{
+		dashTrail.GetComponent<DashTrail> ().mbEnabled = true;
+	}
+
+	public void DashWaitedDisable()
+	{
+		StartCoroutine ("Wait");
+	}
+
+	public void InvuState()
+	{
+		playerState = PlayerState.Invu;
+	}
 
 
 	void Die()
@@ -367,5 +402,5 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 public enum PlayerState
 {
-	Die = 0, Idle, Jump
+	Die = 0, Idle, Jump, Invu
 }

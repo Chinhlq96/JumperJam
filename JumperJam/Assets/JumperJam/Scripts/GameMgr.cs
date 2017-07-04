@@ -56,27 +56,29 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		ShowTapUI ();
 	}
 
-	// Reset everything to restart
-	public void LoadGameScene()
+	//Despawn Mob
+	void DespawnMob()
 	{
-		//Despawn Mob
 		foreach (GameObject element in spawnList) 
 		{
 			if (element.gameObject.activeSelf)
 				try
-				{
-					ContentMgr.Instance.Despaw (element.transform.parent.gameObject);
-				}
-				catch
-				{
-					ContentMgr.Instance.Despaw (element);
-				}
+			{
+				ContentMgr.Instance.Despaw (element.transform.parent.gameObject);
+			}
+			catch
+			{
+				ContentMgr.Instance.Despaw (element);
+			}
 		}
-
 		//Clear Mob List
 		spawnList.Clear ();
+	}
 
-		//Despawn platform
+
+	//Despawn platform
+	void DespawnPlatform()
+	{
 		foreach (var item in platformList)
 		{
 			if (item.gameObject.activeSelf)
@@ -84,6 +86,14 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		}
 		//Clear platform list
 		platformList.Clear ();
+	}
+
+	// Reset everything to restart
+	public void LoadGameScene()
+	{
+		
+		DespawnMob();
+		DespawnPlatform ();
 
 		//reset Camera position
 		CameraControl.Instance.ResetCamera ();
@@ -100,6 +110,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		//Cant move
 		PlayerController.Instance.canMoveNow = false;
 
+		//Count to shake reset
+		PlayerController.Instance.count=0;
+
 		//reset (bool)followed of camera ->  camera follow correctly after reset
 		CameraControl.Instance.followed = false;
 
@@ -108,8 +121,11 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		PlayerController.Instance.groundDeath = false;
 		PlayerController.Instance.areaDeath = false;
 
+
 		//ground deactived when out of camera sight -> we have to active it again
 		CameraControl.Instance.SetActiveGroundToTrue ();
+
+
 
 		// random new map type
 		_randomValue = Random.Range (1, 6);
@@ -135,6 +151,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void Exit()
 	{
+
+		PlayerController.Instance.ResetOnReplay ();
+		//Stop the coroutine that show Game Over Canvas when quick quit
+		StopCoroutine ("GameOverDelay");
+
+	
 		UIManager.Instance.ShowPage ("StartPage");
 	}
 
