@@ -239,6 +239,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 						ContentMgr.Instance.Despaw (col.gameObject);
 					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
+					ContentMgr.Instance.GetItem ("DeathParticle", col.transform.position);
 				} else 
 				{
 					count++;
