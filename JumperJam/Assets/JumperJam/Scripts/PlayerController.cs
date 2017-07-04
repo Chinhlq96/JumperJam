@@ -160,13 +160,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 
-		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
-		if ((transform.position.y > maxPos.y)) 
+		// Neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
+		if ((transform.position.y - maxPos.y > .5f) && (playerState != PlayerState.Die)) 
 		{
 			ScoreMgr.Instance.AddScore (Mathf.RoundToInt (Mathf.Abs (transform.position.y - maxPos.y)));
-		}
-		if (transform.position.y > maxPos.y) 
-		{
 			maxPos = transform.position;
 		}
 	}

@@ -5,9 +5,6 @@ using DG.Tweening;
 public class CameraControl : SingletonMonoBehaviour <CameraControl>
 {
 	[SerializeField]
-	GameObject player;
-
-	[SerializeField]
 	Transform BeginCameraPoint;
 
 	//So giay camera follow khi chet
@@ -48,17 +45,17 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	{
 
 		//Camera khong follow khi Player idle ( roi xuong nhung ko chet )
-		if ( player.transform.position.y>0)
+		if (PlayerController.Instance.transform.position.y>0)
 		{
-			if (player.transform.position.y > transform.position.y) 
+			if (PlayerController.Instance.transform.position.y > transform.position.y) 
 			{
-				this.transform.position = new Vector3 (0, player.transform.position.y, -100);
+				this.transform.position = new Vector3 (0, PlayerController.Instance.transform.position.y, -100);
 			}
 
 		}
 
 		//Camera follow khi player chet. Dieu kien : player da chet , camera chua follow , player ko bi groundDeath ( kieu chet tai luc bat dau)
-		if (PlayerController.Instance.playerState == 0 && !followed && !player.GetComponent<PlayerController> ().groundDeath) 
+		if (PlayerController.Instance.playerState == 0 && !followed && !PlayerController.Instance.GetComponent<PlayerController> ().groundDeath) 
 		{
 			StartCoroutine ("deathCam");
 		}
@@ -108,13 +105,13 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		//Camera slide to player 
 		if (!tweened)
 		{
-			this.transform.DOMove (new Vector3 (transform.position.x, player.transform.position.y, transform.position.z), 0.2f);
+			this.transform.DOMove (new Vector3 (transform.position.x, PlayerController.Instance.transform.position.y, transform.position.z), 0.2f);
 			yield return new WaitForSeconds (.2f);
 			tweened = true;
 		}
 
 		//camera position = player position --> follow
-		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y, transform.position.z);
+		this.transform.position = new Vector3 (transform.position.x, PlayerController.Instance.transform.position.y, transform.position.z);
 
 		yield return new WaitForSeconds(followTime);
 		followed = true;
