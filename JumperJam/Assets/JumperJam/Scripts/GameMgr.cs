@@ -104,7 +104,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		CameraControl.Instance.followed = false;
 
 		//reset (bool)groundDeath (Camera wont follow player if it died by ground)
+		// reset areaDeath
 		PlayerController.Instance.groundDeath = false;
+		PlayerController.Instance.areaDeath = false;
 
 		//ground deactived when out of camera sight -> we have to active it again
 		CameraControl.Instance.SetActiveGroundToTrue ();

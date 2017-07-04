@@ -103,10 +103,10 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	{	
 		
 		//Camera slide to player 
-		if (!tweened)
+		if (!tweened&&PlayerController.Instance.areaDeath)
 		{
 			this.transform.DOMove (new Vector3 (transform.position.x, PlayerController.Instance.transform.position.y, transform.position.z), 0.2f);
-			yield return new WaitForSeconds (.2f);
+			yield return new WaitForSeconds (0.2f);
 			tweened = true;
 		}
 

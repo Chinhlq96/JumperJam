@@ -65,6 +65,13 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		set { _groundDeath = value; }
 	}
 
+	private bool _areaDeath;
+	public bool areaDeath
+	{
+		get { return _areaDeath; }
+		set { _areaDeath = value; }
+	}
+
 
 	// 1 die 2 idle 3 jump
 	private PlayerState _playerState;
@@ -273,6 +280,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (playerState != PlayerState.Die) 
 			{
 				Die ();
+				areaDeath = true;
 			}
 			count++;
 			if (count == 2) {
