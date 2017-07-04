@@ -21,6 +21,10 @@ public class CoinPickUp : MonoBehaviour {
 				}
 			if(this.CompareTag("Boost")&&PlayerController.Instance.playerState!=PlayerState.Die)
 				{
+				//PlayerController.Instance.ResetVelocity ();
+
+				col.gameObject.transform.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+				//Invoke ("boosted", 0.1f);
 				PlayerController.Instance.GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,80), ForceMode2D.Impulse);
 				PlayerController.Instance.DashEnabled ();
 				PlayerController.Instance.DashWaitedDisable ();
@@ -29,6 +33,11 @@ public class CoinPickUp : MonoBehaviour {
 				}
 		}
 
+	}
+
+	void boosted()
+	{
+		
 	}
 		
 }
