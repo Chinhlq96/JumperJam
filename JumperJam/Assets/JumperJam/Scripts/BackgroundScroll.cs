@@ -4,6 +4,8 @@ using UnityEngine;
 using EventManager;
 
 public class BackgroundScroll : MonoBehaviour {
+
+
 	public Material midIce;
 	public Material sideIce;
 	public Material subIce;
@@ -23,20 +25,27 @@ public class BackgroundScroll : MonoBehaviour {
 	public Material midTree;
 	public Material sideTree;
 	public Material subTree;
+
+	//meshRen gan lai background
 	private MeshRenderer meshRen;
+
+	//background follow camera movement
 	private Transform camera;
 	float lastCameraPos = 0;
 	Vector2 offset = new Vector2 (0, 0);
 
-
 	void Start()
 	{
+		// Get MeshRender of attached object 
 		meshRen = GetComponent<MeshRenderer> ();
+
 		ChangeBackground ();
+
 		camera = Camera.main.transform;
 	}
 
 
+	//Change Background according to randomValue in gameMgr to match with platform style and ground style
 	public void ChangeBackground()
 	{
 		if (GameMgr.Instance.randomValue == 1) 
@@ -132,7 +141,11 @@ public class BackgroundScroll : MonoBehaviour {
 	}
 
 
-	void Update () {
+	/// <summary>
+	/// background scroll according to camera movement
+	/// </summary>
+	void Update () 
+	{
 		float shift = camera.position.y - lastCameraPos;
 		lastCameraPos = camera.position.y;
 		offset.y += shift*0.05f;
