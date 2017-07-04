@@ -10,7 +10,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	[SerializeField]
 	Transform BeginCameraPoint;
 
-	//Thoi gian camera follow khi chet
+	//So giay camera follow khi chet
 	public float followTime = 0f;
 
 	//khoang cach giua vi tri cua camera va player
@@ -18,13 +18,19 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 
 	//Check xem da follow chua
 	public bool followed;
-	//Check xem da lay distance chua<
+
+	//Check xem da lay distance chua
 	bool checkedDistant;
 
+	//Check xem camera da DOmove xuong player khi chet chua
 	bool tweened;
 
-	bool imageHiden;
+	//Check xem da disable Ground khi chung' out of sign chua
+	bool imageHidden;
 
+
+	//GroundImage ---> phan` dat' player dung' luc bat dau
+	//GroundCollider ---> Collider ground , player cham vao se chet ---> groundDeath
 	[SerializeField]
 	 GameObject groundImage;
 	[SerializeField]
@@ -35,11 +41,13 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		distanceFromPlayer = 0f;
 	}
 
+
 	public void ResetCamera()
 	{
 		transform.position = BeginCameraPoint.position;
 		tweened = false;
 	}
+
 	void Update()
 	{
 
@@ -53,10 +61,11 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 
 		}
 
-		//Camera follow khi player chet
+		//Camera follow khi player chet. Dieu kien : player da chet , camera chua follow , player ko bi groundDeath ( kieu chet tai luc bat dau)
 		if (PlayerController.Instance.playerState == 0 && !followed && !player.GetComponent<PlayerController> ().groundDeath) {
 			//Lay khoang cach giua player va camera
-			if (!checkedDistant) {
+			if (!checkedDistant)
+			{
 				distanceFromPlayer = transform.position.y - player.transform.position.y;
 			}
 			checkedDistant = true;
@@ -70,61 +79,44 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	}
 
 
-	//7/2
+	//Hide GroundImg and GroundCollider when out of sign
 	public void OnTriggerEnter2D(Collider2D col)
 	{
-		if (col.CompareTag ("GroundImg")) {
+		if (col.CompareTag ("GroundImg")) 
+		{
 			
 			groundImage = col.gameObject;
 			col.gameObject.SetActive (false);
-			imageHiden = true;
-//			Destroy (col.gameObject);
-//			DestroyObject (col.gameObject);
+			imageHidden = true;
 		}
-		if (col.CompareTag ("Ground")) {
+
+		if (col.CompareTag ("Ground")) 
+		{
 			
 			groundCollider = col.gameObject;
 			col.gameObject.SetActive(false);
-			imageHiden = true;
+			imageHidden = true;
 		}
 	}
 
+	//Set these two to active
 	public void SetActiveGroundToTrue()
 	{
-		if (imageHiden) {
+		if (imageHidden) 
+		{
 
 		groundImage.SetActive(true);
 		groundCollider.SetActive (true);
 
-			imageHiden = false;
+			imageHidden = false;
 		}
 	}
-
-
-//	//if (PlayerController.Instance.playerState == 0 &&!followed &&! player.GetComponent<PlayerController>().groundDeath ) 
-//	public void followOnDeath()
-//	{
-//		if (!followed && !player.GetComponent<PlayerController> ().groundDeath) 
-//		{
-//			//Lay khoang cach giua player va camera
-//			if (!checkedDistant) {
-//				distanceFromPlayer = transform.position.y - player.transform.position.y;
-//			}
-//			checkedDistant = true;
-//
-//			//Follow player trong thoi gian followTime
-//			StartCoroutine ("deathCam");
-//		}
-//
-//
-//
-//	}
 
 
 	IEnumerator deathCam()
 	{	
 		
-		//this.transform.position = new Vector3 (transform.position.x, player.transform.position.y - distanceFromPlayer, transform.position.z);
+	
 		if (!tweened)
 		{
 			this.transform.DOMove (new Vector3 (transform.position.x, player.transform.position.y, transform.position.z), 0.2f);
@@ -137,13 +129,5 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		yield return new WaitForSeconds(followTime);
 		followed = true;
 	}
-
-//	IEnumerator stopFalling()
-//	{
-//		yield return new WaitForSeconds (0.3f);
-//		PlayerController.Instance.setGravity (0);
-//		PlayerController.Instance.resetVelocity ();
-//		
-//	}
 
 }

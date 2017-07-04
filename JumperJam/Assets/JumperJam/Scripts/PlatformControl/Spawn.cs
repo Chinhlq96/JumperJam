@@ -5,8 +5,13 @@ using EventManager;
 
 public class Spawn : MonoBehaviour {
 
+
+	/// <summary>
+	/// A Collider follow player
+	/// Trigger Spawn new patern when touch PlatformG 
+	/// </summary>
 	[SerializeField]
-	GameObject player;
+	private GameObject player;
 
 	void Update()
 	{	
