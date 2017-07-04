@@ -241,7 +241,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
 				} else 
 				{
-					playerState = PlayerState.Die;
 					count++;
 					Die ();
 					Shake ();
@@ -249,7 +248,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			}
 			if (col.CompareTag ("UndeadEnemy")) 
 			{
-				playerState = PlayerState.Die;
 				count++;
 				Die ();
 				Shake ();
@@ -258,7 +256,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			{
 				if (groundTouched) 
 				{
-					playerState = PlayerState.Die;
 					Die ();
 					count++;
 					Shake ();
@@ -273,7 +270,6 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		{
 			if (playerState != PlayerState.Die) 
 			{
-				playerState = PlayerState.Die;
 				Die ();
 			}
 			count++;
