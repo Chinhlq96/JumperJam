@@ -36,10 +36,6 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	[SerializeField]
 	 GameObject groundCollider;
 
-	public void resetDistant()
-	{
-		distanceFromPlayer = 0f;
-	}
 
 
 	public void ResetCamera()
@@ -62,16 +58,8 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		}
 
 		//Camera follow khi player chet. Dieu kien : player da chet , camera chua follow , player ko bi groundDeath ( kieu chet tai luc bat dau)
-		if (PlayerController.Instance.playerState == 0 && !followed && !player.GetComponent<PlayerController> ().groundDeath) {
-			//Lay khoang cach giua player va camera
-			if (!checkedDistant)
-			{
-				distanceFromPlayer = transform.position.y - player.transform.position.y;
-			}
-			checkedDistant = true;
-
-			//Follow player trong thoi gian followTime
-
+		if (PlayerController.Instance.playerState == 0 && !followed && !player.GetComponent<PlayerController> ().groundDeath) 
+		{
 			StartCoroutine ("deathCam");
 		}
 
@@ -99,7 +87,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		}
 	}
 
-	//Set these two to active
+	//Set GroundImage and GroundCollider to active
 	public void SetActiveGroundToTrue()
 	{
 		if (imageHidden) 
@@ -113,17 +101,19 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 	}
 
 
+	//camera follow player
 	IEnumerator deathCam()
 	{	
 		
-	
+		//Camera slide to player 
 		if (!tweened)
 		{
 			this.transform.DOMove (new Vector3 (transform.position.x, player.transform.position.y, transform.position.z), 0.2f);
-			yield return new WaitForSeconds (0.2f);
+			yield return new WaitForSeconds (.2f);
 			tweened = true;
 		}
 
+		//camera position = player position --> follow
 		this.transform.position = new Vector3 (transform.position.x, player.transform.position.y, transform.position.z);
 
 		yield return new WaitForSeconds(followTime);

@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Check : MonoBehaviour {
 
-	public bool stepped;
+	/// <summary>
+	/// Add to platform with PlatformG tag
+	/// if 'Spawn' gameobject that follow player 'stepped' on these platform ---> new platform pattern is spawned
+	/// </summary>
+	private bool stepped;
+
 	void OnEnable()
 	{
 		stepped = false;

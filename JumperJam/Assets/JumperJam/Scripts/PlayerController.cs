@@ -9,26 +9,43 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	// force add to jump
 	[SerializeField]
 	Vector2 force;
+
+
 	// sprite renderer of player
 	[SerializeField]
 	SpriteRenderer playerSR;
+
+
 	// RigidBody
 	[SerializeField]
 	Rigidbody2D RG;
+
+
 	// Transform of player
 	[SerializeField]
 	Transform playerTrans;
+
+
 	[SerializeField]
 	private Transform[] backGround;	
+
 	[SerializeField]
 	private Transform spawnPlayerPoint;
+
 	[SerializeField]
 	private float moveSpeed;
 
+	[SerializeField]
+	GameObject dashTrail;
+
 	private float moveX;
-	private bool notTouchOne;
-	// Count Dieu khien rung man hinh
+
+	//private bool notTouchOne;
+
+
+	//control when to shake
 	private int count = 0;
+
 	//player can move horizontal or not
 	private bool _canMoveNow;
 	public bool canMoveNow
@@ -36,15 +53,19 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		get { return _canMoveNow; }
 		set { _canMoveNow = value; }
 	}
-	//Check ground death at start
+
+	//Check ground death at start ( player khong chet khi cham ground luc dau )
 	private bool groundTouched;
-	//
+
+
 	private bool _groundDeath;
 	public bool groundDeath
 	{
 		get { return _groundDeath; }
 		set { _groundDeath = value; }
 	}
+
+
 	// 1 die 2 idle 3 jump
 	private PlayerState _playerState;
 	public PlayerState playerState
@@ -56,20 +77,26 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			UpdateState();
 		}
 	}
+
+
 	// Vi tri Player de tinh diem
 	private Vector3 startPos;
 	private Vector3 maxPos;
 
+
+	// 3 loai sprite : death idle jump
 	public Sprite[] aniSprites;
+
+
 
 	void OnEnable()
 	{
+		//init startPos, maxPos for scoreMgr
 		startPos = transform.position;
 		maxPos = startPos;
-		DOTween.Init ();
+
 		playerState = PlayerState.Idle;
 		canMoveNow = false;
-		notTouchOne = true;
 	}
 
 	/// Update state while change state
@@ -95,16 +122,17 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		RG.gravityScale = value;
 	}
 
+
 	public void ResetOnReplay()
 	{
-		//playerTrans.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+		
 		this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		ResetVelocity ();
 		SetGravity (0);
 		ResetPosition ();
-		//Invoke("resetPosition",5f);
 		playerState = PlayerState.Jump;
 	}
+
 
 	void Update ()
 	{
@@ -120,6 +148,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			MoveX (directionX);
 		}
 
+
+
 		//teleport player to right/left if over go
 		//World position -> Screen position  ( from random world number to 0~Screen.Width number )
 		Vector3 scrPos = Camera.main.WorldToScreenPoint (transform.position);
@@ -127,6 +157,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			TeleportToRight (scrPos);
 		if (scrPos.x > Screen.width + 10)
 			TeleportToLeft (scrPos);
+
+
 
 		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
 		if ((transform.position.y > maxPos.y)) 
@@ -139,6 +171,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		}
 	}
 
+
+
 	void TeleportToRight(Vector3 scrPos)
 	{
 		// position we want to move to ( Screen position )
@@ -148,6 +182,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		// then assign to player position 
 		transform.position = targetWorldPos;
 	}
+
+
 
 	void TeleportToLeft (Vector3 scrPos)
 	{
@@ -159,6 +195,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		transform.position = targetScrPos;
 	}
 
+
+	//Move player horizontaly
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
@@ -166,32 +204,27 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		transform.position = pos;
 	}
 
+
+
 	public void OnTriggerEnter2D(Collider2D col)
 	{
 		//2 loai Platform voi force khac nhau
-		if (col.CompareTag ("Platform") || col.CompareTag ("SPlatform")) 
+		if ((transform.position.y > col.transform.position.y + 0.3f)&&(col.CompareTag ("Platform") || col.CompareTag ("SPlatform"))) 
 		{
 			if (col.CompareTag ("SPlatform")) 
 			{
 				Jump (new Vector2 (0, 80f));
+				StartCoroutine ("Wait");
+			} 
 
-			} else
-				Jump (force);
+			else
 
-			//make platform bounce
-			// Player spin
-			//			if (notTouchOne == true) 
-			//			{
-			//				Jump (force);
-			//				transform.eulerAngles = new Vector3 (0,0,0);
-			//				if (moveX > 0.5f || Input.acceleration.x > 0.5f) {
-			//					transform.DORotate (new Vector3 (0, 0, -360), 0.5f, RotateMode.FastBeyond360);
-			//				} else if (moveX < 0.5f || Input.acceleration.x < 0.5f){
-			//					transform.DORotate (new Vector3 (0, 0, +360), 0.5f, RotateMode.FastBeyond360);
-			//				}
-			//				notTouchOne = false;
-			//			}
+			Jump (force);
+
+
 		}
+
+
 		// Neu chet thi k xet va cham nua
 		if (playerState != PlayerState.Die) { 
 			if (col.CompareTag ("Enemy") || col.CompareTag ("Bullet")) 
@@ -254,11 +287,22 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		}
 	}
 
+
+	IEnumerator Wait() 
+	{
+		yield return new WaitForSeconds (.9f);
+		dashTrail.GetComponent<DashTrail>().mbEnabled = false;
+	}
+
+
+	// Luc dau cham ground ko bi chet ---> sau do roi xuong cham ground moi chet
 	public void OnTriggerExit2D(Collider2D col)
 	{
 		if (col.CompareTag ("Ground")) 
 			groundTouched = true;
 	}
+
+
 
 	IEnumerator Bound(Collider2D col)
 	{
@@ -271,17 +315,23 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		yield return new WaitForSeconds (0.1f);
 	}
 
+
+
 	public void Jump(Vector2 force)
 	{
 		if (RG.velocity.y <= 0)
 		{
 			if (playerState == PlayerState.Die) return;
 			RG.velocity = new Vector2(0, 0);
+			if (force.y > 50)
+				dashTrail.GetComponent<DashTrail> ().mbEnabled = true;
 			RG.AddForce(force, ForceMode2D.Impulse);
 			playerState = PlayerState.Jump;
 		}
-		notTouchOne = true;
+		//notTouchOne = true;
 	}
+
+
 
 	void Die()
 	{
@@ -291,8 +341,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		ScoreMgr.Instance.UpdateGameOverScore ();
 		MapMgr.Instance.ResetDifficult ();
 		GameMgr.Instance.GameOver();
-//		camera.GetComponent<CameraControl> ().followOnDeath ();
     }
+
 
 	void Shake() 
 	{
@@ -301,7 +351,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		backGround [2].GetComponent<CamShake> ().MinorShake (40);
 	}
 
-	public void ResetPos() {
+
+	public void ResetPos() 
+	{
 		maxPos = startPos;
 	}
 }

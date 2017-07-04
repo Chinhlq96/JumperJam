@@ -162,8 +162,8 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 			ShowTapUI ();
 		
 			PlayerController.Instance.ResetVelocity ();
-			PlayerController.Instance.Jump (new Vector2 (0, 50f));
-			PlayerController.Instance.SetGravity (3);
+			PlayerController.Instance.Jump (new Vector2 (0, 40f));
+			PlayerController.Instance.SetGravity (2);
 			PlayerController.Instance.canMoveNow = true;
 		}
 		//PlayerController.Instance.Jump();
