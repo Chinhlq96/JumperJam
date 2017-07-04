@@ -129,8 +129,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			TeleportToLeft (scrPos);
 
 		// Moi khi khoang cach tang len 5 thi cong 5 diem neu chua vuot qua duoc vi tri qua nhat thi khong cong diem
-		if ((Mathf.RoundToInt (Mathf.Abs (transform.position.y - startPos.y)) % 5 == 0) && (transform.position.y > maxPos.y))
-			ScoreMgr.Instance.AddScore (5);
+		if ((transform.position.y > maxPos.y)) 
+		{
+			ScoreMgr.Instance.AddScore (Mathf.RoundToInt (Mathf.Abs (transform.position.y - maxPos.y)));
+		}
 		if (transform.position.y > maxPos.y) 
 		{
 			maxPos = transform.position;
