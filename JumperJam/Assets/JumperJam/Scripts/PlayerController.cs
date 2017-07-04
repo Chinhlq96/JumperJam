@@ -82,7 +82,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	// Vi tri Player de tinh diem
 	private Vector3 startPos;
 	private Vector3 maxPos;
-
+	private ParticleSystem particle;
 
 	// 3 loai sprite : death idle jump
 	public Sprite[] aniSprites;
@@ -239,7 +239,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 						ContentMgr.Instance.Despaw (col.gameObject);
 					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
-					ContentMgr.Instance.GetItem ("DeathParticle", col.transform.position);
+					particle = ContentMgr.Instance.GetItem<ParticleSystem> ("DeathParticle", col.transform.position);
+					StartCoroutine ("DespawAfter", particle.duration);
 				} else 
 				{
 					count++;
@@ -288,7 +289,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		dashTrail.GetComponent<DashTrail>().mbEnabled = false;
 	}
 
-
+	IEnumerator DespawAfter(float duration) 
+	{
+		yield return new WaitForSeconds (duration);
+		ContentMgr.Instance.Despaw (particle.gameObject);
+	}
 	// Luc dau cham ground ko bi chet ---> sau do roi xuong cham ground moi chet
 	public void OnTriggerExit2D(Collider2D col)
 	{
