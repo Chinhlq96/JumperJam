@@ -25,6 +25,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	[SerializeField]
 	Transform playerTrans;
 
+	[SerializeField]
+	Vector2 addForce;
 
 	[SerializeField]
 	private Transform[] backGround;	
@@ -90,7 +92,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	private Vector3 startPos;
 	private Vector3 maxPos;
 	private ParticleSystem particle;
-
+	private bool isDespawed;
 	// 3 loai sprite : death idle jump
 	public Sprite[] aniSprites;
 
@@ -217,7 +219,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		{
 			if (col.CompareTag ("SPlatform")) 
 			{
-				Jump (new Vector2 (0, 80f));
+				Jump (addForce);
 				StartCoroutine ("Wait");
 			} 
 
@@ -246,8 +248,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 						ContentMgr.Instance.Despaw (col.gameObject);
 					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
+					isDespawed = false;
 					particle = ContentMgr.Instance.GetItem<ParticleSystem> ("DeathParticle", col.transform.position);
-					StartCoroutine ("DespawAfter", particle.duration);
+					if (!isDespawed)
+						StartCoroutine ("DespawAfter", particle.duration);
 				} else 
 				{
 					count++;
@@ -301,6 +305,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	{
 		yield return new WaitForSeconds (duration);
 		ContentMgr.Instance.Despaw (particle.gameObject);
+		isDespawed = true;
 	}
 	// Luc dau cham ground ko bi chet ---> sau do roi xuong cham ground moi chet
 	public void OnTriggerExit2D(Collider2D col)
@@ -330,7 +335,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		{
 			if (playerState == PlayerState.Die) return;
 			RG.velocity = new Vector2(0, 0);
-			if (force.y > 50)
+			if (force.y > 50) 
 				dashTrail.GetComponent<DashTrail> ().mbEnabled = true;
 			RG.AddForce(force, ForceMode2D.Impulse);
 			playerState = PlayerState.Jump;
