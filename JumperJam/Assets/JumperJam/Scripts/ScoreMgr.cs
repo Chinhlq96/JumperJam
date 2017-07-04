@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
+public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> 
+{
 
 	private int score;
 	private int bestScore;
@@ -20,10 +21,10 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	Text coinsText;
 	[SerializeField]
 	Text coinsTextChar;
-	// Use this for initialization
-	void OnEnable () {
-		score = 0;
 
+	void OnEnable () 
+	{
+		score = 0;
 		int coins = PlayerPrefs.GetInt ("TotalCoin");
 		coinsTextChar.text = "x" + coins;
 		coinsText.text = "x" + coins;
@@ -31,14 +32,16 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 		bestScoreText.text = "" + bestScore;
 	}
 
-	public void UpdateGameOverScore() {
-		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) {
+	public void UpdateGameOverScore() 
+	{
+		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) 
+		{
 			PlayerPrefs.SetInt ("BestScore", score);
 			bestScore = PlayerPrefs.GetInt ("BestScore");
 			bestScoreText.text = "" + bestScore;
-
 			bestScoreImage.gameObject.SetActive (true);
-		} else {
+		} else 
+		{
 			bestScoreImage.gameObject.SetActive (false);
 		}
 		gameoverScoreText.text = "" + score;
@@ -52,10 +55,10 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr> {
 	{	
 		score = 0;
 		scoreText.text = "" + 0;
-	
 	}
 
-	public void AddScore (int _score) {
+	public void AddScore (int _score) 
+	{
 		score += _score;
 		scoreText.text = "" + score;
 	}
