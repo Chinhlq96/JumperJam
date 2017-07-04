@@ -7,21 +7,10 @@ public class CoinPickUp : MonoBehaviour {
 
 	private int point = 1;
 
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
-
 	public void OnTriggerEnter2D (Collider2D col)
 	{
 		if (col.CompareTag ("Player")) {
-			gameObject.SetActive (false);
+			ContentMgr.Instance.Despaw (gameObject);
 			// Add Point here
 			ScoreMgr.Instance.AddCoin(point);
 		}

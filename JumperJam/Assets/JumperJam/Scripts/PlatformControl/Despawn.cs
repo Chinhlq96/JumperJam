@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Despawn : MonoBehaviour {
-
+public class Despawn : MonoBehaviour 
+{
 	[SerializeField]
 	GameObject player;
 
@@ -16,15 +16,13 @@ public class Despawn : MonoBehaviour {
 	public void OnTriggerEnter2D(Collider2D other)
 	{ 
 		if (other.CompareTag("PlatformG"))
-			{
-				//Despawn Platform	
-				ContentMgr.Instance.Despaw (other.gameObject.transform.parent.gameObject);
-				
-			}
-
+		{
+			//Despawn Platform	
+			ContentMgr.Instance.Despaw (other.gameObject.transform.parent.gameObject);
+		}
 		if (other.CompareTag("Enemy") || other.CompareTag("UndeadEnemy"))
-			{
-				//Neu enemy o trong mot object khac ( object Enemy chua enemy va patrol point )
+		{
+			//Neu enemy o trong mot object khac ( object Enemy chua enemy va patrol point )
 			try
 				{
 				ContentMgr.Instance.Despaw (other.gameObject.transform.parent.gameObject);
@@ -33,11 +31,10 @@ public class Despawn : MonoBehaviour {
 				{
 				ContentMgr.Instance.Despaw (other.gameObject);
 				}
-				
-			}
+		}
 		if(other.CompareTag("Coin") )
-			{
-				ContentMgr.Instance.Despaw (other.gameObject);
-			}
+		{
+			ContentMgr.Instance.Despaw (other.gameObject);
+		}
 	}
 }

@@ -7,10 +7,6 @@ using UnityEngine.SceneManagement;
 public class GameMgr : SingletonMonoBehaviour<GameMgr>
 {
 
-
-
-   	private GameState _gameState;
-
     [SerializeField]
     GameObject[] tapObjects;
 
@@ -19,32 +15,29 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	[SerializeField]
 	GameObject[] backgroundParts;
-
-
 	//
 	public List<GameObject> spawnList = new List<GameObject>();
 	public List<GameObject> platformList = new List<GameObject> ();
 
+	private int _randomValue = 0;
+	public int randomValue
+	{
+		get { return _randomValue; }
+		set { _randomValue = value; }
+	}
 
-
-
-	public int randomValue = 0;
-
+	private GameState _gameState;
     public GameState gameState
     {	
         get { return _gameState; }
         set { _gameState = value; }
     }
 
-
     void OnEnable()
-
 	{	
-		randomValue = Random.Range (1, 6);
-		//Debug.Log (randomValue);
+		_randomValue = Random.Range (1, 6);
         gameState = GameState.Start;
         InputMgr.TapToScreen += TapToScreen;
-
     }
 
     void OnDisable()
@@ -52,24 +45,18 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
         InputMgr.TapToScreen -= TapToScreen;
     }
 
-    /// Call from start Button
-    /// </summary>
+    // Call from start Button
     public void NewGame()
-    {   
+	{   
 		System.GC.Collect ();
 		PlayerController.Instance.playerState = PlayerState.Jump;
 		PlayerController.Instance.UpdateState ();
-        gameState = GameState.Wait;
+		gameState = GameState.Wait;
 		MapMgr.Instance.GenStart ();
-        ShowTapUI();
-    }
+		ShowTapUI ();
+	}
 
-
-
-
-	/// <summary>
-	/// Reset everything to restart
-	/// </summary>
+	// Reset everything to restart
 	public void LoadGameScene()
 	{
 		//Despawn Mob
@@ -84,22 +71,19 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 				{
 					ContentMgr.Instance.Despaw (element);
 				}
-		
 		}
+
 		//Clear Mob List
 		spawnList.Clear ();
-
 
 		//Despawn platform
 		foreach (var item in platformList)
 		{
 			if (item.gameObject.activeSelf)
 				ContentMgr.Instance.Despaw (item);
-
 		}
 		//Clear platform list
 		platformList.Clear ();
-
 
 		//reset Camera position
 		CameraControl.Instance.ResetCamera ();
@@ -126,8 +110,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		CameraControl.Instance.SetActiveGroundToTrue ();
 
 		// random new map type
-		randomValue = Random.Range (1, 6);
-
+		_randomValue = Random.Range (1, 6);
 
 		// new background
 		for (int i = 0; i < backgroundParts.Length ;i++) 
@@ -135,24 +118,17 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 			backgroundParts [i].GetComponent<BackgroundScroll> ().ChangeBackground ();	
 		}
 
-
 		// new ground
 		changeGround.Instance.ChangeGround ();
 
-
 		// reset maxPos ( to count score )
-		PlayerController.Instance.maxPos = PlayerController.Instance.startPos;
-
+		PlayerController.Instance.ResetPos();
 
 		//Reset score show when playing = 0
 		Invoke ("ResetScore", 0.1f);
 
 		// 'Tap to jump' scene ,  use invoke because i think  if  'MapMgr.Instance.GenStart ()'  called too soon it will be added to the PlatformList then despawned right at start.
 		Invoke ("NewGame", 0.1f);
-
-
-		//SceneManager.LoadScene ("GameIce");
-		//UIManager.Instance.ShowPage ("GamePage");
 	}
 
 	public void Exit()
@@ -160,22 +136,15 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		UIManager.Instance.ShowPage ("StartPage");
 	}
 
-
-
 	public void ResetScore()
 	{
 		ScoreMgr.Instance.resetScore ();
-
 	}
-
-
 
     public void GameOver()
     {
-		
 		StartCoroutine ("GameOverDelay");
     }
-		
 
     void ShowTapUI()
     {
@@ -187,21 +156,18 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
     void TapToScreen()
     {
-        if (gameState == GameState.Wait)
-        {
-            gameState = GameState.Playing;
-            ShowTapUI();
+		if (gameState == GameState.Wait)
+		{
+			gameState = GameState.Playing;
+			ShowTapUI ();
 		
 			PlayerController.Instance.ResetVelocity ();
 			PlayerController.Instance.Jump (new Vector2 (0, 50f));
 			PlayerController.Instance.SetGravity (3);
-
 			PlayerController.Instance.canMoveNow = true;
-        }
+		}
 		//PlayerController.Instance.Jump();
     }
-
-
 
 	public void Pause() 
 	{
@@ -223,7 +189,6 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		yield return new WaitForSeconds (0.7f);
 		UIManager.Instance.ShowPage("GameOverPage");
 	}
-
 }
 
 public enum GameState
