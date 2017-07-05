@@ -91,10 +91,12 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	// Reset everything to restart
 	public void LoadGameScene()
 	{
-		
+
+
 		DespawnMob();
 		DespawnPlatform ();
 
+		StopCoroutine ("GameOverDelay");
 		//reset Camera position
 		CameraControl.Instance.ResetCamera ();
 
