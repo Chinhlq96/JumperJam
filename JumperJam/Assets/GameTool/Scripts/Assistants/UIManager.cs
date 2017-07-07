@@ -77,8 +77,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager> {
                     panel.SetVisible(false, immediate);
         }
 
-        if (page.show_ads) AdAssistant.Instance.ShowAds(page.adType);
-        onShowPage.Invoke(page.name);
+//        if (page.show_ads) AdAssistant.Instance.ShowAds(page.adType);
+//        onShowPage.Invoke(page.name);
 
         if (page.soundtrack != "-") {
             if (page.soundtrack != AudioManager.Instance.currentTrack)

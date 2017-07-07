@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 using Berry.Utils;
 
 public class AdAssistant : SingletonMonoBehaviour<AdAssistant>
@@ -18,12 +18,12 @@ public class AdAssistant : SingletonMonoBehaviour<AdAssistant>
     public string AdMob_Baner_iOS = "";
 
 
-    void Awake()
-    {
-        RequestBanner();
-        RequestInterstitial();
-        ShowBanner();
-    }
+//    void Awake()
+//    {
+//        RequestBanner();
+//        RequestInterstitial();
+//        ShowBanner();
+//    }
 
 
     string GetAdMobIDs(AdType adType)
@@ -51,69 +51,69 @@ public class AdAssistant : SingletonMonoBehaviour<AdAssistant>
     }
 
 
-    public void ShowAds(AdType adType)
-    {
-        switch (adType)
-        {
-            case AdType.Interstitial:
-                ShowInterstitial();
-                break;
-            case AdType.Banner:
-                ShowBanner();
-                break;
-            default:
-                break;
-        }
+//    public void ShowAds(AdType adType)
+//    {
+//        switch (adType)
+//        {
+//            case AdType.Interstitial:
+//                ShowInterstitial();
+//                break;
+//            case AdType.Banner:
+//                ShowBanner();
+//                break;
+//            default:
+//                break;
+//        }
+//
+//    }
 
-    }
 
-
-    BannerView bannerView;
+    //BannerView bannerView;
 
     private void RequestBanner()
     {
         // Create a 320x50 banner at the top of the screen.
-        bannerView = new BannerView(GetAdMobIDs(AdType.Banner), AdSize.SmartBanner, AdPosition.Bottom);
+        //bannerView = new BannerView(GetAdMobIDs(AdType.Banner), AdSize.SmartBanner, AdPosition.Bottom);
         // Create an empty ad request.
-        AdRequest request = new AdRequest.Builder().Build();
+        //AdRequest request = new AdRequest.Builder().Build();
         // Load the banner with the request.
-        bannerView.LoadAd(request);
+        //bannerView.LoadAd(request);
     }
 
-    InterstitialAd interstitial;
+    //InterstitialAd interstitial;
 
     private void RequestInterstitial()
     {
         // Initialize an InterstitialAd.
-        interstitial = new InterstitialAd(GetAdMobIDs(AdType.Interstitial));
+        //interstitial = new InterstitialAd(GetAdMobIDs(AdType.Interstitial));
         // Create an empty ad request.
-        AdRequest request = new AdRequest.Builder().Build();
+        //AdRequest request = new AdRequest.Builder().Build();
         // Load the interstitial with the request.
-        interstitial.LoadAd(request);
+        //interstitial.LoadAd(request);
     }
 
-    public void ShowInterstitial()
-    {
-        if (interstitial.IsLoaded())
-        {
-            interstitial.Show();
-            RequestInterstitial();
-        }
-    }
+//    public void ShowInterstitial()
+//    {
+//        if (interstitial.IsLoaded())
+//        {
+//            interstitial.Show();
+//            RequestInterstitial();
+//        }
+//    }
 
-    public void ShowBanner()
-    {
-        if (Utilities.IsInternetAvailable())
-        {
-            bannerView.Show();
-            Debug.Log("Show");
-        }
-    }
-
-    public void DestroyBanner()
-    {
-        bannerView.Destroy();
-    }
+//    public void ShowBanner()
+//    {
+//        if (Utilities.IsInternetAvailable())
+//        {
+//            bannerView.Show();
+//            Debug.Log("Show");
+//        }
+//    }
+//
+//    public void DestroyBanner()
+//    {
+//        bannerView.Destroy();
+//    }
 
 }
 
