@@ -15,6 +15,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	[SerializeField]
 	GameObject[] backgroundParts;
+
+	[SerializeField]
+	GameObject deathBox;
 	//
 	public List<GameObject> spawnList = new List<GameObject>();
 	public List<GameObject> platformList = new List<GameObject> ();
@@ -122,7 +125,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		// reset areaDeath
 		PlayerController.Instance.groundDeath = false;
 		PlayerController.Instance.areaDeath = false;
-
+		deathBox.SetActive (true);
 
 		//ground deactived when out of camera sight -> we have to active it again
 		CameraControl.Instance.SetActiveGroundToTrue ();
@@ -153,8 +156,11 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void Exit()
 	{
+		deathBox.SetActive (false);
 
 		PlayerController.Instance.ResetOnReplay ();
+
+
 		//Stop the coroutine that show Game Over Canvas when quick quit
 		StopCoroutine ("GameOverDelay");
 

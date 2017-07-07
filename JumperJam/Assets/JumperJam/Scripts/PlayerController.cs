@@ -133,6 +133,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	public void ResetVelocity()
 	{
 		RG.velocity = new Vector2 (0, 0);
+	
 
 		//prevent player spinning when restart
 		RG.angularVelocity = 0f;
@@ -226,6 +227,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 
 
+
+	/// <summary>
+	/// Xu li death va kill enemy
+	/// </summary>
+
 	public void OnTriggerEnter2D(Collider2D col)
 	{
 		//2 loai Platform voi force khac nhau
@@ -269,9 +275,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					particle = ContentMgr.Instance.GetItem<ParticleSystem> ("DeathParticle", col.transform.position);
 					if (!isDespawed)
 						StartCoroutine ("DespawAfter", particle.duration);
+					
 				} else 
 				{
 					count++;
+					AudioManager.Instance.Shot ("Kill");
 					Die ();
 					Shake ();
 				}
@@ -280,6 +288,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			{
 				count++;
 				Die ();
+				AudioManager.Instance.Shot ("Kill");
 				Shake ();
 			}
 			if (col.CompareTag ("Ground")) 
@@ -289,6 +298,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					Die ();
 					count++;
 					Shake ();
+					AudioManager.Instance.Shot ("Death");
 					groundDeath = true;
 					//Khi chet ngay o doan dau thi reset luon
 					count = 0;
@@ -307,6 +317,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (count == 2) {
 				Shake ();
 				count = 0;
+				AudioManager.Instance.Shot ("Death");
 			}
 		}
 	}
@@ -361,6 +372,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			DashEnabled ();
 
 			RG.AddForce(force, ForceMode2D.Impulse);
+			AudioManager.Instance.Shot ("Jump");
 			playerState = PlayerState.Jump;
 		}
 		//notTouchOne = true;
