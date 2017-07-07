@@ -145,16 +145,29 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 
+	//Reset
 	public void ResetOnReplay()
 	{
 		//at start if groundTouched is still true --> player instanly death as groundDeath
 		groundTouched = false;
-
 		ResetVelocity ();
 		this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		SetGravity (0);
 		ResetPosition ();
 		playerState = PlayerState.Jump;
+
+		canMoveNow = false;
+
+		//Count to shake reset
+		count = 0;
+
+		//reset (bool)groundDeath (Camera wont follow player if it died by ground)
+		// reset areaDeath
+		groundDeath = false;
+		areaDeath = false;
+
+		// reset maxPos ( to count score )
+		ResetMaxPos();
 	}
 
 
@@ -413,7 +426,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 
-	public void ResetPos() 
+	public void ResetMaxPos() 
 	{
 		maxPos = startPos;
 	}

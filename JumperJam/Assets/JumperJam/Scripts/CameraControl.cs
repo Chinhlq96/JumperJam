@@ -35,10 +35,22 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 
 
 
+	/// <summary>
+	/// Resets the camera.
+	/// </summary>
 	public void ResetCamera()
 	{
 		transform.position = BeginCameraPoint.position;
 		tweened = false;
+
+		//Force stop 'Camera Follow Player On Death' function
+		StopCoroutine ("deathCam");
+
+		//reset (bool)followed of camera ->  camera follow correctly after reset
+		followed = false;
+
+		//ground deactived when out of camera sight -> we have to active it again
+		SetActiveGroundToTrue ();
 	}
 
 	void Update()

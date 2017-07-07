@@ -109,28 +109,8 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		//Enter GamePage
 		UIManager.Instance.ShowPage ("GamePage");
 
-		//Force stop 'Camera Follow Player On Death' function
-		CameraControl.Instance.StopCoroutine ("deathCam");
 
-		//Cant move
-		PlayerController.Instance.canMoveNow = false;
-
-		//Count to shake reset
-		PlayerController.Instance.count=0;
-
-		//reset (bool)followed of camera ->  camera follow correctly after reset
-		CameraControl.Instance.followed = false;
-
-		//reset (bool)groundDeath (Camera wont follow player if it died by ground)
-		// reset areaDeath
-		PlayerController.Instance.groundDeath = false;
-		PlayerController.Instance.areaDeath = false;
 		deathBox.SetActive (true);
-
-		//ground deactived when out of camera sight -> we have to active it again
-		CameraControl.Instance.SetActiveGroundToTrue ();
-
-
 
 		// random new map type
 		_randomValue = Random.Range (1, 6);
@@ -142,10 +122,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 		}
 
 		// new ground
-		changeGround.Instance.ChangeGround ();
-
-		// reset maxPos ( to count score )
-		PlayerController.Instance.ResetPos();
+		ChangeGround.Instance.ChangeGroundStyle ();
 
 		//Reset score show when playing = 0
 		Invoke ("ResetScore", 0.1f);
@@ -156,6 +133,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void Exit()
 	{
+		//prevent double dead
 		deathBox.SetActive (false);
 
 		PlayerController.Instance.ResetOnReplay ();
@@ -218,7 +196,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	IEnumerator GameOverDelay()
 	{
-		yield return new WaitForSeconds (1.5f);
+		yield return new WaitForSeconds (0.7f);
 		UIManager.Instance.ShowPage("GameOverPage");
 	}
 }
