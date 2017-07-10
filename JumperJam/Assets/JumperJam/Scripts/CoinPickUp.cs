@@ -13,31 +13,27 @@ public class CoinPickUp : MonoBehaviour {
 	{
 		if (col.CompareTag ("Player")) 
 		{
-			if (this.CompareTag ("Coin")) 
+			if (this.CompareTag ("Coin") && PlayerController.Instance.playerState != PlayerState.Die) 
 			{
 				ContentMgr.Instance.Despaw (gameObject);
 				// Add Point here
 				ScoreMgr.Instance.AddCoin (point);
 			}
-			if(this.CompareTag("Boost")&&PlayerController.Instance.playerState!=PlayerState.Die)
-				{
+			if (this.CompareTag ("Boost") && PlayerController.Instance.playerState != PlayerState.Die) 
+			{
 				//PlayerController.Instance.ResetVelocity ();
 
-				col.gameObject.transform.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-				//Invoke ("boosted", 0.1f);
-				PlayerController.Instance.GetComponent<Rigidbody2D> ().AddForce (new Vector2(0,80), ForceMode2D.Impulse);
+				col.gameObject.transform.parent.GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+				//Tao bong mo` + xu li trang thai invu 
+				PlayerController.Instance.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (0, 80), ForceMode2D.Impulse);
 				PlayerController.Instance.DashEnabled ();
 				PlayerController.Instance.DashWaitedDisable ();
 				PlayerController.Instance.InvuState ();
 				ContentMgr.Instance.Despaw (gameObject);
-				}
+			}
 		}
 
 	}
 
-	void boosted()
-	{
-		
-	}
 		
 }
