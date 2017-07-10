@@ -35,27 +35,23 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 		bestScoreText.text = "" + bestScore;
 	}
 
+	public bool isBest = false;
+	//Update diem khi gameover
 	public void UpdateGameOverScore() 
 	{
-		if ((PlayerController.Instance.playerState == PlayerState.Die) && CheckBestScore()) 
+		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) 
 		{
 			PlayerPrefs.SetInt ("BestScore", score);
 			bestScore = PlayerPrefs.GetInt ("BestScore");
 			bestScoreText.text = "" + bestScore;
 			bestScoreImage.gameObject.SetActive (true);
+			isBest = true;
 		} else 
 		{
 			bestScoreImage.gameObject.SetActive (false);
+			isBest = false;
 		}
 		gameoverScoreText.text = "" + score;
-	}
-
-	public bool CheckBestScore() {
-		return (bestScore < score);
-	}
-	public int getScore()
-	{
-		return score;
 	}
 
 	public void resetScore()

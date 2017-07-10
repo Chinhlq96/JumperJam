@@ -201,7 +201,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	{
 		yield return new WaitForSeconds (0.7f);
 		UIManager.Instance.ShowPage("GameOverPage");
-		if (ScoreMgr.Instance.CheckBestScore ()) {
+		if (ScoreMgr.Instance.isBest) {
 			bestScoreSE.Play ();
 		}
 	}
