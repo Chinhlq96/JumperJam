@@ -8,12 +8,10 @@ public class Despawn : MonoBehaviour
 	/// <summary>
 	/// A Despawn area followed player to despawn Platform/Enemy when they out of sign
 	/// </summary>
-	[SerializeField]
-	GameObject player;
 
 	void Update()
 	{	
-		this.transform.position = new Vector3 (0, player.transform.position.y-35, 0);
+		this.transform.position = new Vector3 (0, PlayerController.Instance.transform.position.y-35, 0);
 	}
 
 	public void OnTriggerEnter2D(Collider2D other)

@@ -15,11 +15,11 @@ public class Check : MonoBehaviour {
 		stepped = false;
 
 	}
-	public bool getStepped()
+	public bool GetStepped()
 	{
 		return stepped;
 	}
-	public void setStepped(bool stepped)
+	public void SetStepped(bool stepped)
 	{
 		 this.stepped=stepped;
 	}

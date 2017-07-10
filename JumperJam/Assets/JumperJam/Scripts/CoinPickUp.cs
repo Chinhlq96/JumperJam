@@ -13,12 +13,12 @@ public class CoinPickUp : MonoBehaviour {
 	{
 		if (col.CompareTag ("Player")) 
 		{
-			if(this.CompareTag("Coin"))
-				{
-					ContentMgr.Instance.Despaw (gameObject);
-			// Add Point here
-			ScoreMgr.Instance.AddCoin(point);
-				}
+			if (this.CompareTag ("Coin")) 
+			{
+				ContentMgr.Instance.Despaw (gameObject);
+				// Add Point here
+				ScoreMgr.Instance.AddCoin (point);
+			}
 			if(this.CompareTag("Boost")&&PlayerController.Instance.playerState!=PlayerState.Die)
 				{
 				//PlayerController.Instance.ResetVelocity ();

@@ -10,6 +10,19 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	[SerializeField]
 	Vector2 force;
 
+	[SerializeField]
+	AudioSource sfx;
+	[SerializeField]
+	AudioClip deathSE;
+	[SerializeField]
+	AudioClip jumpSE;
+	[SerializeField]
+	AudioClip killSE;
+	[SerializeField]
+	AudioClip killedSE;
+	[SerializeField]
+	AudioClip boostSE;
+
 
 	// sprite renderer of player
 	[SerializeField]
@@ -29,13 +42,15 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	Vector2 addForce;
 
 	[SerializeField]
-	private Transform[] backGround;	
+    private Transform[] background;	
 
 	[SerializeField]
 	private Transform spawnPlayerPoint;
 
 	[SerializeField]
 	private float moveSpeed;
+    [SerializeField]
+    private float editorMoveSpeed;
 
 	[SerializeField]
 	GameObject dashTrail;
@@ -63,6 +78,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 	//Check ground death at start ( player khong chet khi cham ground luc dau )
+    [HideInInspector]
 	public bool groundTouched;
 
 
@@ -133,6 +149,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	public void ResetVelocity()
 	{
 		RG.velocity = new Vector2 (0, 0);
+	
 
 		//prevent player spinning when restart
 		RG.angularVelocity = 0f;
@@ -144,16 +161,29 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 
+	//Reset
 	public void ResetOnReplay()
 	{
 		//at start if groundTouched is still true --> player instanly death as groundDeath
 		groundTouched = false;
-
 		ResetVelocity ();
 		this.transform.rotation = Quaternion.Euler (new Vector3 (0, 0, 0));
 		SetGravity (0);
 		ResetPosition ();
 		playerState = PlayerState.Jump;
+
+		canMoveNow = false;
+
+		//Count to shake reset
+		count = 0;
+
+		//reset (bool)groundDeath (Camera wont follow player if it died by ground)
+		// reset areaDeath
+		groundDeath = false;
+		areaDeath = false;
+
+		// reset maxPos ( to count score )
+		ResetMaxPos();
 	}
 
 
@@ -220,11 +250,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
-		pos += directionX * moveSpeed * 1.5f ;
+        pos += directionX * editorMoveSpeed * 1.5f ;
 		transform.position = pos;
 	}
 
 
+
+
+	/// <summary>
+	/// Xu li death va kill enemy
+	/// </summary>
 
 	public void OnTriggerEnter2D(Collider2D col)
 	{
@@ -265,14 +300,21 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 						ContentMgr.Instance.Despaw (col.gameObject);
 					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
+
+					PlaySfx (killSE);
+
+
 					isDespawed = false;
 					particle = ContentMgr.Instance.GetItem<ParticleSystem> ("DeathParticle", col.transform.position);
 					if (!isDespawed)
 						StartCoroutine ("DespawAfter", particle.duration);
+					
 				} else 
 				{
 					count++;
 					Die ();
+					PlaySfx (killedSE);
+
 					Shake ();
 				}
 			}
@@ -280,6 +322,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			{
 				count++;
 				Die ();
+				PlaySfx (killedSE);
+
 				Shake ();
 			}
 			if (col.CompareTag ("Ground")) 
@@ -290,6 +334,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					count++;
 					Shake ();
 					groundDeath = true;
+
+					PlaySfx (deathSE);
+
 					//Khi chet ngay o doan dau thi reset luon
 					count = 0;
 				}
@@ -307,11 +354,17 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (count == 2) {
 				Shake ();
 				count = 0;
+				PlaySfx (deathSE);
+		
 			}
 		}
 	}
 
-
+	void PlaySfx(AudioClip clip) {
+		sfx.clip = clip;
+		sfx.Play ();
+	}
+    //Wait for disable dash effect and invu state
 	IEnumerator Wait() 
 	{
 		yield return new WaitForSeconds (.9f);
@@ -359,6 +412,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 			if (force.y > 50)
 			DashEnabled ();
+			
+			PlaySfx (jumpSE);
+				
 
 			RG.AddForce(force, ForceMode2D.Impulse);
 			playerState = PlayerState.Jump;
@@ -378,6 +434,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	public void InvuState()
 	{
+		PlaySfx (boostSE);
+
 		playerState = PlayerState.Invu;
 	}
 
@@ -387,21 +445,21 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 		playerState = PlayerState.Die;
-		ScoreMgr.Instance.UpdateGameOverScore ();
 		MapMgr.Instance.ResetDifficult ();
 		GameMgr.Instance.GameOver();
-    }
+		ScoreMgr.Instance.UpdateGameOverScore ();
 
+    }
 
 	void Shake() 
 	{
-		backGround [0].GetComponent<CamShake> ().MinorShake (100);
-		backGround [1].GetComponent<CamShake> ().MinorShake (40);
-		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+		background [0].GetComponent<CamShake> ().MinorShake (100);
+		background [1].GetComponent<CamShake> ().MinorShake (40);
+		background [2].GetComponent<CamShake> ().MinorShake (40);
 	}
 
 
-	public void ResetPos() 
+	public void ResetMaxPos() 
 	{
 		maxPos = startPos;
 	}
