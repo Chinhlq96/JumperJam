@@ -13,7 +13,7 @@ public class CoinPickUp : MonoBehaviour {
 	{
 		if (col.CompareTag ("Player")) 
 		{
-			if (this.CompareTag ("Coin")) 
+			if (this.CompareTag ("Coin")&&PlayerController.Instance.playerState!=PlayerState.Die) 
 			{
 				ContentMgr.Instance.Despaw (gameObject);
 				// Add Point here

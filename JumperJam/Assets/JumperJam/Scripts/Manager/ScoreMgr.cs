@@ -34,7 +34,7 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 		bestScore = PlayerPrefs.GetInt ("BestScore");
 		bestScoreText.text = "" + bestScore;
 	}
-
+	[HideInInspector]
 	public bool isBest = false;
 	//Update diem khi gameover
 	public void UpdateGameOverScore() 
