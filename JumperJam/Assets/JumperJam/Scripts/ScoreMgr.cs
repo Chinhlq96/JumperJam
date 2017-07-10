@@ -22,6 +22,9 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 	[SerializeField]
 	Text coinsTextChar;
 
+	[SerializeField]
+	AudioSource coinSE;
+
 	void OnEnable () 
 	{
 		score = 0;
@@ -34,7 +37,7 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 
 	public void UpdateGameOverScore() 
 	{
-		if ((PlayerController.Instance.playerState == PlayerState.Die) && (bestScore < score)) 
+		if ((PlayerController.Instance.playerState == PlayerState.Die) && CheckBestScore()) 
 		{
 			PlayerPrefs.SetInt ("BestScore", score);
 			bestScore = PlayerPrefs.GetInt ("BestScore");
@@ -45,6 +48,10 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 			bestScoreImage.gameObject.SetActive (false);
 		}
 		gameoverScoreText.text = "" + score;
+	}
+
+	public bool CheckBestScore() {
+		return (bestScore < score);
 	}
 	public int getScore()
 	{
@@ -65,6 +72,8 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 
 	public void AddCoin (int _coin)
 	{
+		coinSE.Play ();
+
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
 		PlayerPrefs.SetInt ("TotalCoin", _coin + coin);
 		//coinsText.text = "x" + (_coin + coin);

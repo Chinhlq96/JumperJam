@@ -10,6 +10,19 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	[SerializeField]
 	Vector2 force;
 
+	[SerializeField]
+	AudioSource sfx;
+	[SerializeField]
+	AudioClip deathSE;
+	[SerializeField]
+	AudioClip jumpSE;
+	[SerializeField]
+	AudioClip killSE;
+	[SerializeField]
+	AudioClip killedSE;
+	[SerializeField]
+	AudioClip boostSE;
+
 
 	// sprite renderer of player
 	[SerializeField]
@@ -284,6 +297,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 						ContentMgr.Instance.Despaw (col.gameObject);
 					}
 					ScoreMgr.Instance.AddScore (col.gameObject.GetComponent<EnemyPatrol> ().point);
+
+					PlaySfx (killSE);
+
+
 					isDespawed = false;
 					particle = ContentMgr.Instance.GetItem<ParticleSystem> ("DeathParticle", col.transform.position);
 					if (!isDespawed)
@@ -292,8 +309,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 				} else 
 				{
 					count++;
-					AudioManager.Instance.Shot ("Kill");
 					Die ();
+					PlaySfx (killedSE);
+
 					Shake ();
 				}
 			}
@@ -301,7 +319,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			{
 				count++;
 				Die ();
-				AudioManager.Instance.Shot ("Kill");
+				PlaySfx (killedSE);
+
 				Shake ();
 			}
 			if (col.CompareTag ("Ground")) 
@@ -311,8 +330,10 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 					Die ();
 					count++;
 					Shake ();
-					AudioManager.Instance.Shot ("Death");
 					groundDeath = true;
+
+					PlaySfx (deathSE);
+
 					//Khi chet ngay o doan dau thi reset luon
 					count = 0;
 				}
@@ -330,11 +351,16 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 			if (count == 2) {
 				Shake ();
 				count = 0;
-				AudioManager.Instance.Shot ("Death");
+				PlaySfx (deathSE);
+		
 			}
 		}
 	}
 
+	void PlaySfx(AudioClip clip) {
+		sfx.clip = clip;
+		sfx.Play ();
+	}
 
 	IEnumerator Wait() 
 	{
@@ -383,9 +409,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 			if (force.y > 50)
 			DashEnabled ();
+			
+			PlaySfx (jumpSE);
+				
 
 			RG.AddForce(force, ForceMode2D.Impulse);
-			AudioManager.Instance.Shot ("Jump");
 			playerState = PlayerState.Jump;
 		}
 		//notTouchOne = true;
@@ -403,6 +431,8 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	public void InvuState()
 	{
+		PlaySfx (boostSE);
+
 		playerState = PlayerState.Invu;
 	}
 
@@ -412,11 +442,11 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		RG.velocity = new Vector2(0, -5);
 		canMoveNow = false;
 		playerState = PlayerState.Die;
-		ScoreMgr.Instance.UpdateGameOverScore ();
 		MapMgr.Instance.ResetDifficult ();
 		GameMgr.Instance.GameOver();
-    }
+		ScoreMgr.Instance.UpdateGameOverScore ();
 
+    }
 
 	void Shake() 
 	{

@@ -11,6 +11,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
     GameObject[] tapObjects;
 
 	[SerializeField]
+	AudioSource bestScoreSE;
+
+	[SerializeField]
 	GameObject Camera;
 
 	[SerializeField]
@@ -198,6 +201,9 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 	{
 		yield return new WaitForSeconds (0.7f);
 		UIManager.Instance.ShowPage("GameOverPage");
+		if (ScoreMgr.Instance.CheckBestScore ()) {
+			bestScoreSE.Play ();
+		}
 	}
 }
 
