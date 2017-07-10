@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopManager: SingletonMonoBehaviour<ShopManager> {
-
-
-
 	//Characters List
 	public List<Character> charList= new List<Character>();
 
 	// 'NotEnouhgCoin' Canvas
-	public GameObject NotEnoughCoins;
+	public GameObject notEnoughCoins;
 
 
 	void Start()
@@ -36,7 +33,7 @@ public class ShopManager: SingletonMonoBehaviour<ShopManager> {
 				PlayerController.Instance.aniSprites [0] = charList [i].characterDieSprite;
 				PlayerController.Instance.aniSprites [1] = charList [i].characterIdleSprite;
 				PlayerController.Instance.aniSprites [2] = charList [i].characterJumpSprite;
-				Debug.Log("id:" + currentCharacterID);
+//				Debug.Log("id:" + currentCharacterID);
 
 			}
 		}
@@ -79,8 +76,8 @@ public class ShopManager: SingletonMonoBehaviour<ShopManager> {
 
 	const string CURRENt_CHARACTER_ID_KEY = "CurrentCharacterID";
 
-
-
-
-
+    public void SetActiveFailNotEnoughPanel()
+    {
+        notEnoughCoins.SetActive (false);
+    }
 }

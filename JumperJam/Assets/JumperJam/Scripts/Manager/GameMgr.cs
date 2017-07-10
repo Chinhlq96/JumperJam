@@ -151,7 +151,7 @@ public class GameMgr : SingletonMonoBehaviour<GameMgr>
 
 	public void ResetScore()
 	{
-		ScoreMgr.Instance.resetScore ();
+		ScoreMgr.Instance.ResetScore ();
 	}
 
     public void GameOver()

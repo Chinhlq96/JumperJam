@@ -54,7 +54,7 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 		gameoverScoreText.text = "" + score;
 	}
 
-	public void resetScore()
+	public void ResetScore()
 	{	
 		score = 0;
 		scoreText.text = "" + 0;
@@ -73,7 +73,7 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
 		PlayerPrefs.SetInt ("TotalCoin", _coin + coin);
 		//coinsText.text = "x" + (_coin + coin);
-		printCoin();
+		UpdateCoin();
 	}
 
 	public void SubCoin (int _coin)
@@ -81,10 +81,10 @@ public class ScoreMgr : SingletonMonoBehaviour<ScoreMgr>
 		var coin = PlayerPrefs.GetInt ("TotalCoin");
 		PlayerPrefs.SetInt ("TotalCoin", coin - _coin);
 	//	coinsTextChar.text = "x" + (coin - _coin);
-		printCoin();
+		UpdateCoin();
 	}
 
-	void printCoin()
+	void UpdateCoin()
 	{
 		coinsText.text = "x" + PlayerPrefs.GetInt ("TotalCoin");
 		coinsTextChar.text = "x" + PlayerPrefs.GetInt ("TotalCoin");

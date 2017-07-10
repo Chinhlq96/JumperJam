@@ -42,13 +42,15 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	Vector2 addForce;
 
 	[SerializeField]
-	private Transform[] backGround;	
+    private Transform[] background;	
 
 	[SerializeField]
 	private Transform spawnPlayerPoint;
 
 	[SerializeField]
 	private float moveSpeed;
+    [SerializeField]
+    private float editorMoveSpeed;
 
 	[SerializeField]
 	GameObject dashTrail;
@@ -76,6 +78,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	}
 
 	//Check ground death at start ( player khong chet khi cham ground luc dau )
+    [HideInInspector]
 	public bool groundTouched;
 
 
@@ -247,7 +250,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 	void MoveX (Vector2 directionX)
 	{
 		Vector2 pos = transform.position;
-		pos += directionX * moveSpeed * 1.5f ;
+        pos += directionX * editorMoveSpeed * 1.5f ;
 		transform.position = pos;
 	}
 
@@ -361,7 +364,7 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 		sfx.clip = clip;
 		sfx.Play ();
 	}
-
+    //Wait for disable dash effect and invu state
 	IEnumerator Wait() 
 	{
 		yield return new WaitForSeconds (.9f);
@@ -450,9 +453,9 @@ public class PlayerController : SingletonMonoBehaviour<PlayerController>
 
 	void Shake() 
 	{
-		backGround [0].GetComponent<CamShake> ().MinorShake (100);
-		backGround [1].GetComponent<CamShake> ().MinorShake (40);
-		backGround [2].GetComponent<CamShake> ().MinorShake (40);
+		background [0].GetComponent<CamShake> ().MinorShake (100);
+		background [1].GetComponent<CamShake> ().MinorShake (40);
+		background [2].GetComponent<CamShake> ().MinorShake (40);
 	}
 
 

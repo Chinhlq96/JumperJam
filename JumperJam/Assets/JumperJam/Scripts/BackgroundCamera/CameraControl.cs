@@ -44,7 +44,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		tweened = false;
 
 		//Force stop 'Camera Follow Player On Death' function
-		StopCoroutine ("deathCam");
+		StopCoroutine ("DeathCam");
 
 		//reset (bool)followed of camera ->  camera follow correctly after reset
 		followed = false;
@@ -69,7 +69,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 		//Camera follow khi player chet. Dieu kien : player da chet , camera chua follow , player ko bi groundDeath ( kieu chet tai luc bat dau)
 		if (PlayerController.Instance.playerState == 0 && !followed && !PlayerController.Instance.GetComponent<PlayerController> ().groundDeath) 
 		{
-			StartCoroutine ("deathCam");
+			StartCoroutine ("DeathCam");
 		}
 
 
@@ -111,7 +111,7 @@ public class CameraControl : SingletonMonoBehaviour <CameraControl>
 
 
 	//camera follow player
-	IEnumerator deathCam()
+	IEnumerator DeathCam()
 	{	
 		
 		//Camera slide to player 
